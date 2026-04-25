@@ -906,6 +906,21 @@
 
   .src-back:hover { border-color: var(--gold); color: var(--cream); }
 
+  .r-plain-language {
+    background: rgba(240,176,48,0.06);
+    border-left: 3px solid #f0b030;
+    border-left: 3px solid var(--gold);
+    padding: 20px 24px;
+    margin-bottom: 28px;
+    font-size: 15px;
+    color: #e8dcc4;
+    color: var(--pale);
+    line-height: 1.8;
+    font-weight: 300;
+    opacity: 0;
+    animation: up 0.6s ease forwards 0.5s;
+  }
+
   /* ── ODDS HIGHLIGHT ── */
   .r-odds-highlight {
     font-family: 'Playfair Display', serif;
@@ -1595,6 +1610,12 @@ function calcOdds() {
   return { rows, structural: Math.round(structural), cohortSize, percentile };
 }
 
+function ordinal(n) {
+  const s = ['th','st','nd','rd'];
+  const v = n % 100;
+  return s[(v-20)%10] || s[v] || s[0];
+}
+
 function fmt(n) {
   if (n>=1e12) return `1 in ${Math.round(n/1e12)} trillion`;
   if (n>=1e9)  return `1 in ${Math.round(n/1e9)} billion`;
@@ -1698,7 +1719,7 @@ function calc() {
 
   const delay = items.length * 350 + 500;
   setTimeout(() => {
-    document.getElementById('calcNum').textContent = `${percentile}th percentile`;
+    document.getElementById('calcNum').textContent = `${percentile}${ordinal(percentile)} percentile`;
     document.getElementById('calcResult').classList.add('show');
   }, delay);
 
@@ -1743,8 +1764,50 @@ function buildCurve(percentile) {
     <polyline points="${polyline}" fill="none" stroke="rgba(212,146,15,0.25)" stroke-width="1.5"/>
     <line x1="${mx}" y1="8" x2="${mx}" y2="${h-10}" stroke="${markerColor}" stroke-width="2"/>
     <circle cx="${mx}" cy="8" r="4" fill="${markerColor}"/>
-    <text x="${Math.min(Math.max(mx, 30), w-60)}" y="26" font-family="DM Mono, monospace" font-size="11" fill="${markerColor}" text-anchor="middle">${percentile}th</text>
+    <text x="${Math.min(Math.max(mx, 30), w-60)}" y="26" font-family="DM Mono, monospace" font-size="11" fill="${markerColor}" text-anchor="middle">${percentile}${ordinal(percentile)}</text>
   </svg>`;
+}
+
+function plainLanguage(nm, percentile, oddsStr) {
+  const first = nm && nm !== 'You' ? nm : 'you';
+  const isYou = first === 'you';
+  const have = isYou ? "you've" : first + " has";
+  const your = isYou ? 'your' : first + "'s";
+  const where = isYou ? 'you are' : first + ' is';
+
+  // Difficulty mode — gaming vocabulary
+  let mode = '';
+  if (percentile >= 99) mode = 'John Wick Mode';
+  else if (percentile >= 86) mode = 'Legendary Mode';
+  else if (percentile >= 73) mode = 'Heroic Mode';
+  else if (percentile >= 60) mode = 'Hard Mode';
+  else if (percentile >= 47) mode = 'Normal Mode';
+  else if (percentile >= 34) mode = 'Story Mode';
+  else if (percentile >= 21) mode = 'Relaxed Mode';
+  else if (percentile >= 8) mode = 'Easy Mode';
+  else mode = 'Tutorial Mode';
+
+  // Odds sentence
+  const oddsLine = percentile >= 47
+    ? `Given where ${first} started, there was a ${oddsStr} chance of landing where ${where} now.`
+    : `Given ${your} starting conditions, the odds of reaching this outcome were ${oddsStr}.`;
+
+  // Gaming mode sentence
+  const modeLine = percentile >= 47
+    ? `In gamer terms: ${have} been playing on ${mode}.`
+    : `In gamer terms: ${your} path has been on ${mode}.`;
+
+  // Percentile meaning
+  let pctLine = '';
+  if (percentile >= 90) {
+    pctLine = `The ${percentile}${ordinal(percentile)} percentile means ${your} path was harder than ${percentile}% of Americans — only ${100 - percentile}% faced more structural resistance.`;
+  } else if (percentile >= 47) {
+    pctLine = `The ${percentile}${ordinal(percentile)} percentile means ${your} path was harder than ${percentile}% of Americans.`;
+  } else {
+    pctLine = `The ${percentile}${ordinal(percentile)} percentile means ${your} starting conditions were more advantaged than ${100 - percentile}% of Americans.`;
+  }
+
+  return `${oddsLine} ${modeLine} ${pctLine}`;
 }
 
 function pctLabel(pct) {
@@ -1768,12 +1831,12 @@ function showResult(rows, structural, cohortSize, percentile) {
   const oddsStr = fmt(structural);
   document.getElementById('rPctWrap').innerHTML = `
     <div class="r-pct-row">
-      <div class="r-pct-number">${percentile}<sup style="font-size:0.4em;vertical-align:super">th</sup></div>
+      <div class="r-pct-number">${percentile}<sup style="font-size:0.4em;vertical-align:super">${ordinal(percentile)}</sup></div>
       <div class="r-pct-label">percentile<br>of structural<br>difficulty</div>
     </div>
     <div class="r-odds-highlight">Structural odds: <span>${oddsStr}</span></div>
     <div class="r-odds-highlight-sub">The rarity of your specific combination of starting conditions and outcomes</div>
-    <div class="r-pct-context">${pctLabel(percentile)}</div>
+    <div class="r-plain-language">${plainLanguage(nm, percentile, oddsStr)}</div>
     <div class="r-curve-wrap">${curveHTML}</div>
     <div class="r-curve-caption"><span>Most advantaged</span><span>Most suppressed</span></div>
     <div class="r-odds-secondary">Birth cohort: ${cohortFmt} people born in the same era</div>
@@ -1793,7 +1856,7 @@ function showResult(rows, structural, cohortSize, percentile) {
 
   document.getElementById('rSeed').textContent = seed();
 
-  document.getElementById('scNum').textContent = `${percentile}th`;
+  document.getElementById('scNum').textContent = `${percentile}${ordinal(percentile)}`;
   document.getElementById('scOdds').innerHTML = `Structural odds: <strong>${oddsStr}</strong>`;
   document.getElementById('scName').textContent = nm;
 
@@ -1811,7 +1874,7 @@ function doCopy() {
   const {structural, percentile} = calcOdds();
   const nm = ans.name || 'I';
   const oddsStr = fmt(structural);
-  const txt = `${nm} just mapped my structural odds.\n\nStructural odds: ${oddsStr}\nDifficulty percentile: ${percentile}th\n\n"Potential is everywhere. Conditions are not."`;
+  const txt = `${nm} just mapped my structural odds.\n\nStructural odds: ${oddsStr}\nDifficulty percentile: ${percentile}${ordinal(percentile)}\n\n"Potential is everywhere. Conditions are not."`;
   navigator.clipboard.writeText(txt).then(() => {
     const btn = document.getElementById('copyBtn');
     btn.textContent = 'Copied ✓';
@@ -1820,7 +1883,7 @@ function doCopy() {
 }
 
 function buildDeepPrompt(nm, percentile, oddsStr) {
-  return `You are a structured guide helping someone understand the social and economic system they grew up in — not to judge their outcomes, but to make the invisible visible. The person you're speaking with has just completed a short demographic intake. Their name is ${nm}. Their structural path placed them in the ${percentile}th percentile of structural difficulty, with structural odds of approximately ${oddsStr} — meaning their combination of starting conditions and outcomes is that statistically uncommon. Continue from that moment. Ask them: "That number — what does it bring up for you?" Then follow wherever they go, with warmth, curiosity, and honesty. Your goal is to help them see their chain clearly — the contingencies that account for where they landed relative to where the system predicted they'd land — and to arrive at their own conclusions about what that means. One question at a time. No jargon. No judgment.`;
+  return `You are a structured guide helping someone understand the social and economic system they grew up in — not to judge their outcomes, but to make the invisible visible. The person you're speaking with has just completed a short demographic intake. Their name is ${nm}. Their structural path placed them in the ${percentile}${ordinal(percentile)} percentile of structural difficulty, with structural odds of approximately ${oddsStr} — meaning their combination of starting conditions and outcomes is that statistically uncommon. Continue from that moment. Ask them: "That number — what does it bring up for you?" Then follow wherever they go, with warmth, curiosity, and honesty. Your goal is to help them see their chain clearly — the contingencies that account for where they landed relative to where the system predicted they'd land — and to arrive at their own conclusions about what that means. One question at a time. No jargon. No judgment.`;
 }
 
 function copyDeepPrompt() {
