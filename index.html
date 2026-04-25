@@ -7,6 +7,8 @@
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#0f0b06">
 <title>The Odds — What Were Yours?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -35,9 +37,11 @@ min-height: 100vh;
 html { scroll-behavior: smooth; }
 
 body {
+background: #0f0b06;
 background: var(–soil);
+color: #f7f0de;
 color: var(–cream);
-font-family: ‘DM Sans’, sans-serif;
+font-family: ‘DM Sans’, system-ui, -apple-system, sans-serif;
 font-weight: 300;
 min-height: 100vh;
 overflow-x: hidden;
@@ -70,6 +74,7 @@ font-family: ‘DM Mono’, monospace;
 font-size: 11px;
 letter-spacing: 0.28em;
 text-transform: uppercase;
+color: #d4920f;
 color: var(–ochre);
 margin-bottom: 36px;
 opacity: 0;
@@ -77,20 +82,22 @@ animation: up 0.7s ease forwards 0.2s;
 }
 
 .headline {
-font-family: ‘Playfair Display’, serif;
+font-family: ‘Playfair Display’, Georgia, serif;
 font-size: clamp(48px, 9vw, 96px);
 font-weight: 900;
 line-height: 0.92;
+color: #f7f0de;
 color: var(–cream);
 margin-bottom: 28px;
 opacity: 0;
 animation: up 0.7s ease forwards 0.35s;
 }
 
-.headline em { font-style: italic; color: var(–gold); }
+.headline em { font-style: italic; color: #f0b030; color: var(–gold); }
 
 .subhead {
 font-size: 17px;
+color: #c8b898;
 color: var(–ash);
 max-width: 440px;
 line-height: 1.75;
@@ -99,17 +106,19 @@ opacity: 0;
 animation: up 0.7s ease forwards 0.5s;
 }
 
-.subhead strong { color: var(–cream); font-weight: 500; }
+.subhead strong { color: #f7f0de; color: var(–cream); font-weight: 500; }
 
 .intro-quote {
-font-family: ‘Playfair Display’, serif;
+font-family: ‘Playfair Display’, Georgia, serif;
 font-style: italic;
 font-size: 14px;
+color: #8a7a60;
 color: var(–dim);
 max-width: 380px;
 line-height: 1.7;
 margin-bottom: 48px;
 padding-top: 20px;
+border-top: 1px solid rgba(212,146,15,0.2);
 border-top: 1px solid var(–border);
 opacity: 0;
 animation: up 0.7s ease forwards 0.62s;
@@ -120,7 +129,9 @@ font-family: ‘DM Mono’, monospace;
 font-size: 13px;
 letter-spacing: 0.16em;
 text-transform: uppercase;
+color: #0f0b06;
 color: var(–soil);
+background: #f0b030;
 background: var(–gold);
 border: none;
 padding: 20px 52px;
@@ -130,7 +141,7 @@ opacity: 0;
 animation: up 0.7s ease forwards 0.75s;
 }
 
-.btn-start:hover { background: var(–cream); transform: translateY(-2px); }
+.btn-start:hover { background: #f7f0de; background: var(–cream); transform: translateY(-2px); }
 
 .fine-print {
 position: absolute;
@@ -173,16 +184,18 @@ text-align: center;
 .q-wrap { max-width: 580px; width: 100%; }
 
 .q-text {
-font-family: ‘Playfair Display’, serif;
+font-family: ‘Playfair Display’, Georgia, serif;
 font-size: clamp(24px, 4.5vw, 36px);
 font-weight: 400;
 line-height: 1.35;
+color: #f7f0de;
 color: var(–cream);
 margin-bottom: 14px;
 }
 
 .q-hint {
 font-size: 14px;
+color: #c8b898;
 color: var(–ash);
 font-style: italic;
 line-height: 1.65;
@@ -193,12 +206,14 @@ margin-bottom: 36px;
 
 .q-opt {
 background: transparent;
+border: 1px solid rgba(212,146,15,0.2);
 border: 1px solid var(–border);
+color: #e8dcc4;
 color: var(–pale);
 padding: 15px 22px;
 text-align: left;
 cursor: pointer;
-font-family: ‘DM Sans’, sans-serif;
+font-family: ‘DM Sans’, system-ui, sans-serif;
 font-size: 15px;
 font-weight: 300;
 line-height: 1.45;
@@ -207,13 +222,17 @@ position: relative;
 }
 
 .q-opt:hover {
+border-color: #f0b030;
 border-color: var(–gold);
+color: #f7f0de;
 color: var(–cream);
 background: rgba(240,176,48,0.06);
 }
 
 .q-opt.sel {
+border-color: #f0b030;
 border-color: var(–gold);
+color: #f7f0de;
 color: var(–cream);
 background: rgba(240,176,48,0.08);
 }
@@ -224,6 +243,7 @@ position: absolute;
 right: 18px;
 top: 50%;
 transform: translateY(-50%);
+color: #f0b030;
 color: var(–gold);
 font-family: ‘DM Mono’, monospace;
 font-size: 13px;
@@ -257,7 +277,9 @@ font-family: ‘DM Mono’, monospace;
 font-size: 12px;
 letter-spacing: 0.16em;
 text-transform: uppercase;
+color: #0f0b06;
 color: var(–soil);
+background: #f0b030;
 background: var(–gold);
 border: none;
 padding: 15px 36px;
@@ -265,7 +287,7 @@ cursor: pointer;
 transition: all 0.2s;
 }
 
-.btn-next:hover:not(:disabled) { background: var(–cream); }
+.btn-next:hover:not(:disabled) { background: #f7f0de; background: var(–cream); }
 .btn-next:disabled { opacity: 0.25; cursor: default; }
 
 .btn-back {
@@ -273,6 +295,7 @@ font-family: ‘DM Mono’, monospace;
 font-size: 11px;
 letter-spacing: 0.12em;
 text-transform: uppercase;
+color: #8a7a60;
 color: var(–dim);
 background: none;
 border: none;
@@ -280,7 +303,7 @@ cursor: pointer;
 transition: color 0.2s;
 }
 
-.btn-back:hover { color: var(–cream); }
+.btn-back:hover { color: #f7f0de; color: var(–cream); }
 
 /* ── CALCULATING ── */
 #calculating {
