@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -25,954 +24,954 @@
     --border: rgba(212,146,15,0.2);
   }
 
-- { margin: 0; padding: 0; box-sizing: border-box; }
-
-html, body {
-background: #0f0b06 !important;
-background-color: #0f0b06 !important;
-min-height: 100%;
-min-height: 100vh;
-}
-
-html { scroll-behavior: smooth; }
-
-body {
-background: #0f0b06;
-background: var(–soil);
-color: #f7f0de;
-color: var(–cream);
-font-family: ‘DM Sans’, system-ui, -apple-system, sans-serif;
-font-weight: 300;
-min-height: 100vh;
-overflow-x: hidden;
-}
-
-body::before {
-content: ‘’;
-position: fixed;
-inset: 0;
-background-image: url(“data:image/svg+xml,%3Csvg viewBox=‘0 0 512 512’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cfilter id=‘n’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.75’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3C/filter%3E%3Crect width=‘100%25’ height=‘100%25’ filter=‘url(%23n)’ opacity=‘0.03’/%3E%3C/svg%3E”);
-pointer-events: none;
-z-index: 999;
-}
-
-.screen { display: none; min-height: 100vh; }
-.screen.active { display: flex; }
-
-/* ── INTRO ── */
-#intro {
-flex-direction: column;
-align-items: center;
-justify-content: center;
-padding: 64px 28px;
-text-align: center;
-position: relative;
-}
-
-.eyebrow {
-font-family: ‘DM Mono’, monospace;
-font-size: 11px;
-letter-spacing: 0.28em;
-text-transform: uppercase;
-color: #d4920f;
-color: var(–ochre);
-margin-bottom: 36px;
-opacity: 0;
-animation: up 0.7s ease forwards 0.2s;
-}
-
-.headline {
-font-family: ‘Playfair Display’, Georgia, serif;
-font-size: clamp(48px, 9vw, 96px);
-font-weight: 900;
-line-height: 0.92;
-color: #f7f0de;
-color: var(–cream);
-margin-bottom: 28px;
-opacity: 0;
-animation: up 0.7s ease forwards 0.35s;
-}
-
-.headline em { font-style: italic; color: #f0b030; color: var(–gold); }
-
-.subhead {
-font-size: 17px;
-color: #c8b898;
-color: var(–ash);
-max-width: 440px;
-line-height: 1.75;
-margin-bottom: 20px;
-opacity: 0;
-animation: up 0.7s ease forwards 0.5s;
-}
-
-.subhead strong { color: #f7f0de; color: var(–cream); font-weight: 500; }
-
-.intro-quote {
-font-family: ‘Playfair Display’, Georgia, serif;
-font-style: italic;
-font-size: 14px;
-color: #8a7a60;
-color: var(–dim);
-max-width: 380px;
-line-height: 1.7;
-margin-bottom: 48px;
-padding-top: 20px;
-border-top: 1px solid rgba(212,146,15,0.2);
-border-top: 1px solid var(–border);
-opacity: 0;
-animation: up 0.7s ease forwards 0.62s;
-}
-
-.btn-start {
-font-family: ‘DM Mono’, monospace;
-font-size: 13px;
-letter-spacing: 0.16em;
-text-transform: uppercase;
-color: #0f0b06;
-color: var(–soil);
-background: #f0b030;
-background: var(–gold);
-border: none;
-padding: 20px 52px;
-cursor: pointer;
-transition: all 0.2s;
-opacity: 0;
-animation: up 0.7s ease forwards 0.75s;
-}
-
-.btn-start:hover { background: #f7f0de; background: var(–cream); transform: translateY(-2px); }
-
-.fine-print {
-position: absolute;
-bottom: 28px;
-font-family: ‘DM Mono’, monospace;
-font-size: 10px;
-color: var(–dim);
-letter-spacing: 0.1em;
-opacity: 0;
-animation: up 0.7s ease forwards 0.9s;
-}
-
-/* ── QUESTIONS ── */
-#questions {
-flex-direction: column;
-align-items: center;
-justify-content: center;
-padding: 72px 28px 48px;
-position: relative;
-}
-
-.progress-bar {
-position: fixed;
-top: 0; left: 0;
-height: 3px;
-background: var(–gold);
-transition: width 0.5s ease;
-z-index: 100;
-}
-
-.q-counter {
-font-family: ‘DM Mono’, monospace;
-font-size: 11px;
-letter-spacing: 0.22em;
-color: var(–ochre);
-margin-bottom: 52px;
-text-align: center;
-}
-
-.q-wrap { max-width: 580px; width: 100%; }
-
-.q-text {
-font-family: ‘Playfair Display’, Georgia, serif;
-font-size: clamp(24px, 4.5vw, 36px);
-font-weight: 400;
-line-height: 1.35;
-color: #f7f0de;
-color: var(–cream);
-margin-bottom: 14px;
-}
-
-.q-hint {
-font-size: 14px;
-color: #c8b898;
-color: var(–ash);
-font-style: italic;
-line-height: 1.65;
-margin-bottom: 36px;
-}
-
-.q-options { display: flex; flex-direction: column; gap: 10px; }
-
-.q-opt {
-background: transparent;
-border: 1px solid rgba(212,146,15,0.2);
-border: 1px solid var(–border);
-color: #e8dcc4;
-color: var(–pale);
-padding: 15px 22px;
-text-align: left;
-cursor: pointer;
-font-family: ‘DM Sans’, system-ui, sans-serif;
-font-size: 15px;
-font-weight: 300;
-line-height: 1.45;
-transition: all 0.15s ease;
-position: relative;
-}
-
-.q-opt:hover {
-border-color: #f0b030;
-border-color: var(–gold);
-color: #f7f0de;
-color: var(–cream);
-background: rgba(240,176,48,0.06);
-}
-
-.q-opt.sel {
-border-color: #f0b030;
-border-color: var(–gold);
-color: #f7f0de;
-color: var(–cream);
-background: rgba(240,176,48,0.08);
-}
-
-.q-opt.sel::after {
-content: ‘✓’;
-position: absolute;
-right: 18px;
-top: 50%;
-transform: translateY(-50%);
-color: #f0b030;
-color: var(–gold);
-font-family: ‘DM Mono’, monospace;
-font-size: 13px;
-}
-
-.q-input {
-width: 100%;
-background: transparent;
-border: none;
-border-bottom: 1px solid rgba(212,146,15,0.4);
-color: var(–cream);
-font-family: ‘Playfair Display’, serif;
-font-size: 28px;
-padding: 10px 0;
-outline: none;
-transition: border-color 0.2s;
-}
-
-.q-input:focus { border-color: var(–gold); }
-.q-input::placeholder { color: var(–dim); font-style: italic; }
-
-.q-nav {
-display: flex;
-justify-content: space-between;
-align-items: center;
-margin-top: 40px;
-}
-
-.btn-next {
-font-family: ‘DM Mono’, monospace;
-font-size: 12px;
-letter-spacing: 0.16em;
-text-transform: uppercase;
-color: #0f0b06;
-color: var(–soil);
-background: #f0b030;
-background: var(–gold);
-border: none;
-padding: 15px 36px;
-cursor: pointer;
-transition: all 0.2s;
-}
-
-.btn-next:hover:not(:disabled) { background: #f7f0de; background: var(–cream); }
-.btn-next:disabled { opacity: 0.25; cursor: default; }
-
-.btn-back {
-font-family: ‘DM Mono’, monospace;
-font-size: 11px;
-letter-spacing: 0.12em;
-text-transform: uppercase;
-color: #8a7a60;
-color: var(–dim);
-background: none;
-border: none;
-cursor: pointer;
-transition: color 0.2s;
-}
-
-.btn-back:hover { color: #f7f0de; color: var(–cream); }
-
-/* ── CALCULATING ── */
-#calculating {
-flex-direction: column;
-align-items: center;
-justify-content: center;
-padding: 60px 28px;
-text-align: center;
-}
-
-.calc-eyebrow {
-font-family: ‘DM Mono’, monospace;
-font-size: 11px;
-letter-spacing: 0.28em;
-text-transform: uppercase;
-color: var(–ochre);
-margin-bottom: 52px;
-}
-
-.calc-chain { max-width: 520px; width: 100%; text-align: left; }
-
-.calc-row {
-display: flex;
-justify-content: space-between;
-align-items: baseline;
-padding: 14px 0;
-border-bottom: 1px solid rgba(212,146,15,0.1);
-opacity: 0;
-transform: translateX(-10px);
-transition: opacity 0.4s ease, transform 0.4s ease;
-}
-
-.calc-row.show { opacity: 1; transform: translateX(0); }
-
-.calc-label { font-size: 13px; color: var(–ash); font-weight: 300; max-width: 68%; line-height: 1.4; }
-.calc-val { font-family: ‘DM Mono’, monospace; font-size: 13px; color: var(–gold); white-space: nowrap; }
-
-.calc-result {
-margin-top: 48px;
-text-align: center;
-opacity: 0;
-transition: opacity 0.7s ease;
-}
-
-.calc-result.show { opacity: 1; }
-
-.calc-result-label {
-font-family: ‘DM Mono’, monospace;
-font-size: 11px;
-letter-spacing: 0.2em;
-color: var(–dim);
-text-transform: uppercase;
-margin-bottom: 14px;
-}
-
-.calc-result-num {
-font-family: ‘Playfair Display’, serif;
-font-size: clamp(40px, 8vw, 80px);
-font-weight: 900;
-color: var(–gold);
-line-height: 1;
-}
-
-/* ── PERCENTILE BLOCK ── */
-.r-percentile-wrap {
-margin-bottom: 52px;
-opacity: 0;
-animation: up 0.7s ease forwards 0.45s;
-}
-
-.r-pct-row {
-display: flex;
-align-items: baseline;
-gap: 20px;
-margin-bottom: 6px;
-flex-wrap: wrap;
-}
-
-.r-pct-number {
-font-family: ‘Playfair Display’, serif;
-font-size: clamp(64px, 14vw, 140px);
-font-weight: 900;
-line-height: 0.88;
-color: var(–gold);
-}
-
-.r-pct-label {
-font-family: ‘DM Mono’, monospace;
-font-size: 13px;
-color: var(–dim);
-letter-spacing: 0.08em;
-line-height: 1.5;
-}
-
-.r-pct-context {
-font-family: ‘DM Mono’, monospace;
-font-size: 12px;
-color: var(–dim);
-margin-bottom: 28px;
-letter-spacing: 0.05em;
-}
-
-.r-curve-wrap {
-width: 100%;
-max-width: 560px;
-margin-bottom: 8px;
-}
-
-.r-curve-caption {
-font-family: ‘DM Mono’, monospace;
-font-size: 10px;
-color: var(–dim);
-letter-spacing: 0.12em;
-text-transform: uppercase;
-display: flex;
-justify-content: space-between;
-margin-top: 8px;
-}
-
-.r-odds-secondary {
-font-family: ‘DM Mono’, monospace;
-font-size: 12px;
-color: var(–dim);
-margin-top: 20px;
-padding-top: 20px;
-border-top: 1px solid var(–border);
-letter-spacing: 0.05em;
-}
-
-/* ── RESULT ── */
-#result {
-flex-direction: column;
-align-items: center;
-padding: 64px 28px 96px;
-}
-
-.result-wrap { max-width: 660px; width: 100%; }
-
-.r-eyebrow {
-font-family: ‘DM Mono’, monospace;
-font-size: 11px;
-letter-spacing: 0.28em;
-text-transform: uppercase;
-color: var(–ochre);
-margin-bottom: 20px;
-opacity: 0;
-animation: up 0.6s ease forwards 0.1s;
-}
-
-.r-name {
-font-family: ‘Playfair Display’, serif;
-font-size: clamp(30px, 5vw, 52px);
-font-weight: 700;
-color: var(–cream);
-margin-bottom: 6px;
-opacity: 0;
-animation: up 0.6s ease forwards 0.2s;
-}
-
-.r-odds-label {
-font-family: ‘DM Mono’, monospace;
-font-size: 12px;
-color: var(–dim);
-letter-spacing: 0.1em;
-margin-bottom: 14px;
-opacity: 0;
-animation: up 0.6s ease forwards 0.3s;
-}
-
-.r-number {
-font-family: ‘Playfair Display’, serif;
-font-size: clamp(56px, 13vw, 128px);
-font-weight: 900;
-line-height: 0.88;
-color: var(–gold);
-margin-bottom: 10px;
-opacity: 0;
-animation: up 0.8s ease forwards 0.4s;
-}
-
-.r-number-note {
-font-family: ‘DM Mono’, monospace;
-font-size: 12px;
-color: var(–dim);
-margin-bottom: 52px;
-opacity: 0;
-animation: up 0.6s ease forwards 0.55s;
-}
-
-.r-divider {
-width: 48px;
-height: 1px;
-background: var(–ochre);
-margin-bottom: 40px;
-opacity: 0;
-animation: up 0.5s ease forwards 0.65s;
-}
-
-.r-section {
-font-family: ‘DM Mono’, monospace;
-font-size: 10px;
-letter-spacing: 0.28em;
-text-transform: uppercase;
-color: var(–ochre);
-margin-bottom: 18px;
-opacity: 0;
-}
-
-.r-section.a1 { animation: up 0.5s ease forwards 0.75s; }
-.r-section.a2 { animation: up 0.5s ease forwards 0.9s; }
-.r-section.a3 { animation: up 0.5s ease forwards 1.1s; }
-
-.r-chain {
-margin-bottom: 52px;
-opacity: 0;
-animation: up 0.6s ease forwards 0.8s;
-}
-
-.chain-row {
-display: flex;
-justify-content: space-between;
-align-items: baseline;
-padding: 11px 0;
-border-bottom: 1px solid rgba(212,146,15,0.1);
-}
-
-.chain-filter { font-size: 13px; color: var(–pale); font-weight: 300; max-width: 72%; line-height: 1.4; }
-.chain-mult { font-family: ‘DM Mono’, monospace; font-size: 12px; color: var(–gold); white-space: nowrap; }
-
-.r-typical {
-background: var(–card);
-border-left: 3px solid var(–terracotta);
-padding: 28px 28px;
-margin-bottom: 52px;
-opacity: 0;
-animation: up 0.6s ease forwards 0.95s;
-}
-
-.r-typical-label {
-font-family: ‘DM Mono’, monospace;
-font-size: 10px;
-letter-spacing: 0.22em;
-text-transform: uppercase;
-color: var(–terracotta);
-margin-bottom: 16px;
-}
-
-.r-typical-text {
-font-size: 14px;
-color: var(–ash);
-line-height: 1.85;
-font-weight: 300;
-}
-
-.r-typical-text strong { color: var(–pale); font-weight: 500; }
-
-.r-seed {
-font-family: ‘Playfair Display’, serif;
-font-style: italic;
-font-size: 18px;
-color: var(–pale);
-line-height: 1.75;
-margin-bottom: 52px;
-opacity: 0;
-animation: up 0.6s ease forwards 1.1s;
-}
-
-.r-actions {
-display: flex;
-gap: 14px;
-flex-wrap: wrap;
-opacity: 0;
-animation: up 0.6s ease forwards 1.2s;
-}
-
-.btn-share {
-font-family: ‘DM Mono’, monospace;
-font-size: 12px;
-letter-spacing: 0.15em;
-text-transform: uppercase;
-color: var(–soil);
-background: var(–gold);
-border: none;
-padding: 15px 30px;
-cursor: pointer;
-transition: all 0.2s;
-}
-
-.btn-share:hover { background: var(–cream); }
-
-.btn-deep {
-font-family: ‘DM Mono’, monospace;
-font-size: 12px;
-letter-spacing: 0.15em;
-text-transform: uppercase;
-color: var(–ash);
-background: transparent;
-border: 1px solid var(–border);
-padding: 15px 30px;
-cursor: pointer;
-transition: all 0.2s;
-}
-
-.btn-deep:hover { border-color: var(–gold); color: var(–cream); }
-
-/* ── SHARE OVERLAY ── */
-.overlay {
-display: none;
-position: fixed;
-inset: 0;
-background: rgba(5,4,2,0.94);
-z-index: 600;
-align-items: center;
-justify-content: center;
-padding: 24px;
-}
-
-.overlay.on { display: flex; }
-
-.share-card {
-background: var(–card);
-border: 1px solid rgba(212,146,15,0.25);
-padding: 48px 40px;
-max-width: 460px;
-width: 100%;
-text-align: center;
-}
-
-.sc-eyebrow {
-font-family: ‘DM Mono’, monospace;
-font-size: 10px;
-letter-spacing: 0.3em;
-text-transform: uppercase;
-color: var(–ochre);
-margin-bottom: 32px;
-}
-
-.sc-number {
-font-family: ‘Playfair Display’, serif;
-font-size: clamp(52px, 11vw, 88px);
-font-weight: 900;
-color: var(–gold);
-line-height: 1;
-margin-bottom: 8px;
-}
-
-.sc-label {
-font-family: ‘DM Mono’, monospace;
-font-size: 11px;
-color: var(–dim);
-letter-spacing: 0.1em;
-margin-bottom: 24px;
-}
-
-.sc-name {
-font-family: ‘Playfair Display’, serif;
-font-size: 22px;
-color: var(–cream);
-margin-bottom: 24px;
-}
-
-.sc-quote {
-font-family: ‘Playfair Display’, serif;
-font-style: italic;
-font-size: 13px;
-color: var(–dim);
-line-height: 1.75;
-margin-bottom: 28px;
-padding: 0 12px;
-}
-
-.sc-url {
-font-family: ‘DM Mono’, monospace;
-font-size: 10px;
-color: var(–ochre);
-letter-spacing: 0.12em;
-margin-bottom: 32px;
-}
-
-.sc-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-
-.btn-copy {
-font-family: ‘DM Mono’, monospace;
-font-size: 11px;
-letter-spacing: 0.12em;
-text-transform: uppercase;
-color: var(–soil);
-background: var(–gold);
-border: none;
-padding: 13px 26px;
-cursor: pointer;
-transition: all 0.2s;
-}
-
-.btn-copy:hover { background: var(–cream); }
-
-.btn-close {
-font-family: ‘DM Mono’, monospace;
-font-size: 11px;
-letter-spacing: 0.12em;
-text-transform: uppercase;
-color: var(–ash);
-background: transparent;
-border: 1px solid var(–border);
-padding: 13px 26px;
-cursor: pointer;
-transition: all 0.2s;
-}
-
-.btn-close:hover { border-color: var(–gold); color: var(–cream); }
-
-/* ── GO DEEPER SCREEN ── */
-#goDeeper {
-flex-direction: column;
-align-items: center;
-justify-content: center;
-padding: 64px 28px;
-text-align: center;
-}
-
-.gd-wrap { max-width: 560px; width: 100%; text-align: left; }
-
-.gd-eyebrow {
-font-family: ‘DM Mono’, monospace;
-font-size: 11px;
-letter-spacing: 0.28em;
-text-transform: uppercase;
-color: var(–ochre);
-margin-bottom: 24px;
-}
-
-.gd-headline {
-font-family: ‘Playfair Display’, serif;
-font-size: clamp(28px, 5vw, 44px);
-font-weight: 700;
-color: var(–cream);
-line-height: 1.2;
-margin-bottom: 20px;
-}
-
-.gd-sub {
-font-size: 15px;
-color: var(–ash);
-line-height: 1.8;
-font-weight: 300;
-margin-bottom: 36px;
-}
-
-.gd-step {
-display: flex;
-gap: 20px;
-align-items: flex-start;
-margin-bottom: 28px;
-padding-bottom: 28px;
-border-bottom: 1px solid var(–border);
-}
-
-.gd-step:last-of-type { border-bottom: none; }
-
-.gd-step-num {
-font-family: ‘Playfair Display’, serif;
-font-size: 32px;
-font-weight: 900;
-color: var(–gold);
-line-height: 1;
-min-width: 32px;
-}
-
-.gd-step-text {
-font-size: 14px;
-color: var(–ash);
-line-height: 1.8;
-font-weight: 300;
-padding-top: 6px;
-}
-
-.gd-step-text strong { color: var(–cream); font-weight: 500; }
-
-.gd-prompt-box {
-background: var(–card);
-border: 1px solid var(–border);
-border-left: 3px solid var(–gold);
-padding: 20px 24px;
-margin-bottom: 32px;
-font-family: ‘DM Mono’, monospace;
-font-size: 12px;
-color: var(–ash);
-line-height: 1.7;
-letter-spacing: 0.02em;
-}
-
-.gd-links {
-display: flex;
-gap: 12px;
-flex-wrap: wrap;
-margin-top: 8px;
-}
-
-.gd-link {
-font-family: ‘DM Mono’, monospace;
-font-size: 11px;
-letter-spacing: 0.12em;
-text-transform: uppercase;
-color: var(–ochre);
-text-decoration: none;
-border-bottom: 1px solid rgba(212,146,15,0.3);
-padding-bottom: 2px;
-transition: color 0.2s, border-color 0.2s;
-}
-
-.gd-link:hover { color: var(–gold); border-color: var(–gold); }
-
-/* ── SOURCES SCREEN ── */
-#sources {
-flex-direction: column;
-align-items: center;
-padding: 64px 28px 96px;
-}
-
-.src-wrap { max-width: 640px; width: 100%; }
-
-.src-eyebrow {
-font-family: ‘DM Mono’, monospace;
-font-size: 11px;
-letter-spacing: 0.28em;
-text-transform: uppercase;
-color: var(–ochre);
-margin-bottom: 24px;
-}
-
-.src-headline {
-font-family: ‘Playfair Display’, serif;
-font-size: clamp(26px, 4vw, 40px);
-font-weight: 700;
-color: var(–cream);
-margin-bottom: 16px;
-line-height: 1.2;
-}
-
-.src-intro {
-font-size: 14px;
-color: var(–ash);
-line-height: 1.8;
-margin-bottom: 48px;
-font-weight: 300;
-}
-
-.src-section-title {
-font-family: ‘DM Mono’, monospace;
-font-size: 10px;
-letter-spacing: 0.25em;
-text-transform: uppercase;
-color: var(–ochre);
-margin-bottom: 16px;
-margin-top: 40px;
-}
-
-.src-item {
-padding: 16px 0;
-border-bottom: 1px solid var(–border);
-}
-
-.src-item-title {
-font-size: 14px;
-color: var(–cream);
-font-weight: 400;
-margin-bottom: 4px;
-line-height: 1.5;
-}
-
-.src-item-meta {
-font-family: ‘DM Mono’, monospace;
-font-size: 11px;
-color: var(–dim);
-margin-bottom: 6px;
-letter-spacing: 0.04em;
-}
-
-.src-item-note {
-font-size: 13px;
-color: var(–ash);
-line-height: 1.7;
-font-weight: 300;
-}
-
-.src-back {
-font-family: ‘DM Mono’, monospace;
-font-size: 11px;
-letter-spacing: 0.15em;
-text-transform: uppercase;
-color: var(–ash);
-background: transparent;
-border: 1px solid var(–border);
-padding: 14px 28px;
-cursor: pointer;
-transition: all 0.2s;
-margin-top: 48px;
-}
-
-.src-back:hover { border-color: var(–gold); color: var(–cream); }
-
-/* ── ODDS HIGHLIGHT ── */
-.r-odds-highlight {
-font-family: ‘Playfair Display’, serif;
-font-size: clamp(18px, 3vw, 26px);
-font-weight: 700;
-color: var(–cream);
-margin-top: 16px;
-margin-bottom: 4px;
-opacity: 0;
-animation: up 0.6s ease forwards 0.5s;
-}
-
-.r-odds-highlight span { color: var(–gold); }
-
-.r-odds-highlight-sub {
-font-family: ‘DM Mono’, monospace;
-font-size: 11px;
-color: var(–dim);
-letter-spacing: 0.08em;
-margin-bottom: 20px;
-opacity: 0;
-animation: up 0.6s ease forwards 0.55s;
-}
-
-/* sources link on result page */
-.r-sources-link {
-font-family: ‘DM Mono’, monospace;
-font-size: 10px;
-letter-spacing: 0.15em;
-text-transform: uppercase;
-color: var(–dim);
-cursor: pointer;
-border-bottom: 1px solid rgba(138,122,96,0.3);
-padding-bottom: 2px;
-transition: color 0.2s;
-background: none;
-border-top: none;
-border-left: none;
-border-right: none;
-margin-top: 16px;
-display: inline-block;
-}
-
-.r-sources-link:hover { color: var(–ash); }
-
-.sc-odds {
-font-family: ‘DM Mono’, monospace;
-font-size: 13px;
-color: var(–ash);
-margin-bottom: 20px;
-letter-spacing: 0.05em;
-}
-
-.sc-odds strong { color: var(–gold); }
-
-@keyframes up {
-from { opacity: 0; transform: translateY(14px); }
-to { opacity: 1; transform: translateY(0); }
-}
-
-.fade { opacity: 0; animation: up 0.45s ease forwards; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: #0f0b06 !important;
+    background-color: #0f0b06 !important;
+    min-height: 100%;
+    min-height: 100vh;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: #0f0b06;
+    background: var(--soil);
+    color: #f7f0de;
+    color: var(--cream);
+    font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  .screen { display: none; min-height: 100vh; }
+  .screen.active { display: flex; }
+
+  /* ── INTRO ── */
+  #intro {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 64px 28px;
+    text-align: center;
+    position: relative;
+  }
+
+  .eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: #d4920f;
+    color: var(--ochre);
+    margin-bottom: 36px;
+    opacity: 0;
+    animation: up 0.7s ease forwards 0.2s;
+  }
+
+  .headline {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(48px, 9vw, 96px);
+    font-weight: 900;
+    line-height: 0.92;
+    color: #f7f0de;
+    color: var(--cream);
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: up 0.7s ease forwards 0.35s;
+  }
+
+  .headline em { font-style: italic; color: #f0b030; color: var(--gold); }
+
+  .subhead {
+    font-size: 17px;
+    color: #c8b898;
+    color: var(--ash);
+    max-width: 440px;
+    line-height: 1.75;
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: up 0.7s ease forwards 0.5s;
+  }
+
+  .subhead strong { color: #f7f0de; color: var(--cream); font-weight: 500; }
+
+  .intro-quote {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-size: 14px;
+    color: #8a7a60;
+    color: var(--dim);
+    max-width: 380px;
+    line-height: 1.7;
+    margin-bottom: 48px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(212,146,15,0.2);
+    border-top: 1px solid var(--border);
+    opacity: 0;
+    animation: up 0.7s ease forwards 0.62s;
+  }
+
+  .btn-start {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #0f0b06;
+    color: var(--soil);
+    background: #f0b030;
+    background: var(--gold);
+    border: none;
+    padding: 20px 52px;
+    cursor: pointer;
+    transition: all 0.2s;
+    opacity: 0;
+    animation: up 0.7s ease forwards 0.75s;
+  }
+
+  .btn-start:hover { background: #f7f0de; background: var(--cream); transform: translateY(-2px); }
+
+  .fine-print {
+    position: absolute;
+    bottom: 28px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--dim);
+    letter-spacing: 0.1em;
+    opacity: 0;
+    animation: up 0.7s ease forwards 0.9s;
+  }
+
+  /* ── QUESTIONS ── */
+  #questions {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 72px 28px 48px;
+    position: relative;
+  }
+
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    background: var(--gold);
+    transition: width 0.5s ease;
+    z-index: 100;
+  }
+
+  .q-counter {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    color: var(--ochre);
+    margin-bottom: 52px;
+    text-align: center;
+  }
+
+  .q-wrap { max-width: 580px; width: 100%; }
+
+  .q-text {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(24px, 4.5vw, 36px);
+    font-weight: 400;
+    line-height: 1.35;
+    color: #f7f0de;
+    color: var(--cream);
+    margin-bottom: 14px;
+  }
+
+  .q-hint {
+    font-size: 14px;
+    color: #c8b898;
+    color: var(--ash);
+    font-style: italic;
+    line-height: 1.65;
+    margin-bottom: 36px;
+  }
+
+  .q-options { display: flex; flex-direction: column; gap: 10px; }
+
+  .q-opt {
+    background: transparent;
+    border: 1px solid rgba(212,146,15,0.2);
+    border: 1px solid var(--border);
+    color: #e8dcc4;
+    color: var(--pale);
+    padding: 15px 22px;
+    text-align: left;
+    cursor: pointer;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.45;
+    transition: all 0.15s ease;
+    position: relative;
+  }
+
+  .q-opt:hover {
+    border-color: #f0b030;
+    border-color: var(--gold);
+    color: #f7f0de;
+    color: var(--cream);
+    background: rgba(240,176,48,0.06);
+  }
+
+  .q-opt.sel {
+    border-color: #f0b030;
+    border-color: var(--gold);
+    color: #f7f0de;
+    color: var(--cream);
+    background: rgba(240,176,48,0.08);
+  }
+
+  .q-opt.sel::after {
+    content: '✓';
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #f0b030;
+    color: var(--gold);
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+  }
+
+  .q-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(212,146,15,0.4);
+    color: var(--cream);
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    padding: 10px 0;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .q-input:focus { border-color: var(--gold); }
+  .q-input::placeholder { color: var(--dim); font-style: italic; }
+
+  .q-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 40px;
+  }
+
+  .btn-next {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #0f0b06;
+    color: var(--soil);
+    background: #f0b030;
+    background: var(--gold);
+    border: none;
+    padding: 15px 36px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-next:hover:not(:disabled) { background: #f7f0de; background: var(--cream); }
+  .btn-next:disabled { opacity: 0.25; cursor: default; }
+
+  .btn-back {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #8a7a60;
+    color: var(--dim);
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+
+  .btn-back:hover { color: #f7f0de; color: var(--cream); }
+
+  /* ── CALCULATING ── */
+  #calculating {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 28px;
+    text-align: center;
+  }
+
+  .calc-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ochre);
+    margin-bottom: 52px;
+  }
+
+  .calc-chain { max-width: 520px; width: 100%; text-align: left; }
+
+  .calc-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(212,146,15,0.1);
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+
+  .calc-row.show { opacity: 1; transform: translateX(0); }
+
+  .calc-label { font-size: 13px; color: var(--ash); font-weight: 300; max-width: 68%; line-height: 1.4; }
+  .calc-val { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--gold); white-space: nowrap; }
+
+  .calc-result {
+    margin-top: 48px;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.7s ease;
+  }
+
+  .calc-result.show { opacity: 1; }
+
+  .calc-result-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--dim);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .calc-result-num {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(40px, 8vw, 80px);
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  /* ── PERCENTILE BLOCK ── */
+  .r-percentile-wrap {
+    margin-bottom: 52px;
+    opacity: 0;
+    animation: up 0.7s ease forwards 0.45s;
+  }
+
+  .r-pct-row {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+  }
+
+  .r-pct-number {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(64px, 14vw, 140px);
+    font-weight: 900;
+    line-height: 0.88;
+    color: #f0b030;
+    color: var(--gold);
+  }
+
+  .r-pct-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: #8a7a60;
+    color: var(--dim);
+    letter-spacing: 0.08em;
+    line-height: 1.5;
+  }
+
+  .r-pct-context {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--dim);
+    margin-bottom: 28px;
+    letter-spacing: 0.05em;
+  }
+
+  .r-curve-wrap {
+    width: 100%;
+    max-width: 560px;
+    margin-bottom: 8px;
+  }
+
+  .r-curve-caption {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--dim);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+  }
+
+  .r-odds-secondary {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--dim);
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    letter-spacing: 0.05em;
+  }
+
+  /* ── RESULT ── */
+  #result {
+    flex-direction: column;
+    align-items: center;
+    padding: 64px 28px 96px;
+  }
+
+  .result-wrap { max-width: 660px; width: 100%; }
+
+  .r-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ochre);
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: up 0.6s ease forwards 0.1s;
+  }
+
+  .r-name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(30px, 5vw, 52px);
+    font-weight: 700;
+    color: var(--cream);
+    margin-bottom: 6px;
+    opacity: 0;
+    animation: up 0.6s ease forwards 0.2s;
+  }
+
+  .r-odds-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--dim);
+    letter-spacing: 0.1em;
+    margin-bottom: 14px;
+    opacity: 0;
+    animation: up 0.6s ease forwards 0.3s;
+  }
+
+  .r-number {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(56px, 13vw, 128px);
+    font-weight: 900;
+    line-height: 0.88;
+    color: var(--gold);
+    margin-bottom: 10px;
+    opacity: 0;
+    animation: up 0.8s ease forwards 0.4s;
+  }
+
+  .r-number-note {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--dim);
+    margin-bottom: 52px;
+    opacity: 0;
+    animation: up 0.6s ease forwards 0.55s;
+  }
+
+  .r-divider {
+    width: 48px;
+    height: 1px;
+    background: var(--ochre);
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: up 0.5s ease forwards 0.65s;
+  }
+
+  .r-section {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ochre);
+    margin-bottom: 18px;
+    opacity: 0;
+  }
+
+  .r-section.a1 { animation: up 0.5s ease forwards 0.75s; }
+  .r-section.a2 { animation: up 0.5s ease forwards 0.9s; }
+  .r-section.a3 { animation: up 0.5s ease forwards 1.1s; }
+
+  .r-chain {
+    margin-bottom: 52px;
+    opacity: 0;
+    animation: up 0.6s ease forwards 0.8s;
+  }
+
+  .chain-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 11px 0;
+    border-bottom: 1px solid rgba(212,146,15,0.1);
+  }
+
+  .chain-filter { font-size: 13px; color: var(--pale); font-weight: 300; max-width: 72%; line-height: 1.4; }
+  .chain-mult { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--gold); white-space: nowrap; }
+
+  .r-typical {
+    background: var(--card);
+    border-left: 3px solid var(--terracotta);
+    padding: 28px 28px;
+    margin-bottom: 52px;
+    opacity: 0;
+    animation: up 0.6s ease forwards 0.95s;
+  }
+
+  .r-typical-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 16px;
+  }
+
+  .r-typical-text {
+    font-size: 14px;
+    color: var(--ash);
+    line-height: 1.85;
+    font-weight: 300;
+  }
+
+  .r-typical-text strong { color: var(--pale); font-weight: 500; }
+
+  .r-seed {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--pale);
+    line-height: 1.75;
+    margin-bottom: 52px;
+    opacity: 0;
+    animation: up 0.6s ease forwards 1.1s;
+  }
+
+  .r-actions {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: up 0.6s ease forwards 1.2s;
+  }
+
+  .btn-share {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--soil);
+    background: var(--gold);
+    border: none;
+    padding: 15px 30px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-share:hover { background: var(--cream); }
+
+  .btn-deep {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ash);
+    background: transparent;
+    border: 1px solid var(--border);
+    padding: 15px 30px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-deep:hover { border-color: var(--gold); color: var(--cream); }
+
+  /* ── SHARE OVERLAY ── */
+  .overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(5,4,2,0.94);
+    z-index: 600;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .overlay.on { display: flex; }
+
+  .share-card {
+    background: var(--card);
+    border: 1px solid rgba(212,146,15,0.25);
+    padding: 48px 40px;
+    max-width: 460px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .sc-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ochre);
+    margin-bottom: 32px;
+  }
+
+  .sc-number {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(52px, 11vw, 88px);
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .sc-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--dim);
+    letter-spacing: 0.1em;
+    margin-bottom: 24px;
+  }
+
+  .sc-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--cream);
+    margin-bottom: 24px;
+  }
+
+  .sc-quote {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--dim);
+    line-height: 1.75;
+    margin-bottom: 28px;
+    padding: 0 12px;
+  }
+
+  .sc-url {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--ochre);
+    letter-spacing: 0.12em;
+    margin-bottom: 32px;
+  }
+
+  .sc-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+  .btn-copy {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--soil);
+    background: var(--gold);
+    border: none;
+    padding: 13px 26px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-copy:hover { background: var(--cream); }
+
+  .btn-close {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ash);
+    background: transparent;
+    border: 1px solid var(--border);
+    padding: 13px 26px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-close:hover { border-color: var(--gold); color: var(--cream); }
+
+  /* ── GO DEEPER SCREEN ── */
+  #goDeeper {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 64px 28px;
+    text-align: center;
+  }
+
+  .gd-wrap { max-width: 560px; width: 100%; text-align: left; }
+
+  .gd-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ochre);
+    margin-bottom: 24px;
+  }
+
+  .gd-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 5vw, 44px);
+    font-weight: 700;
+    color: var(--cream);
+    line-height: 1.2;
+    margin-bottom: 20px;
+  }
+
+  .gd-sub {
+    font-size: 15px;
+    color: var(--ash);
+    line-height: 1.8;
+    font-weight: 300;
+    margin-bottom: 36px;
+  }
+
+  .gd-step {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    margin-bottom: 28px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .gd-step:last-of-type { border-bottom: none; }
+
+  .gd-step-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1;
+    min-width: 32px;
+  }
+
+  .gd-step-text {
+    font-size: 14px;
+    color: var(--ash);
+    line-height: 1.8;
+    font-weight: 300;
+    padding-top: 6px;
+  }
+
+  .gd-step-text strong { color: var(--cream); font-weight: 500; }
+
+  .gd-prompt-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold);
+    padding: 20px 24px;
+    margin-bottom: 32px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--ash);
+    line-height: 1.7;
+    letter-spacing: 0.02em;
+  }
+
+  .gd-links {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+
+  .gd-link {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ochre);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(212,146,15,0.3);
+    padding-bottom: 2px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .gd-link:hover { color: var(--gold); border-color: var(--gold); }
+
+  /* ── SOURCES SCREEN ── */
+  #sources {
+    flex-direction: column;
+    align-items: center;
+    padding: 64px 28px 96px;
+  }
+
+  .src-wrap { max-width: 640px; width: 100%; }
+
+  .src-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ochre);
+    margin-bottom: 24px;
+  }
+
+  .src-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 4vw, 40px);
+    font-weight: 700;
+    color: var(--cream);
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+
+  .src-intro {
+    font-size: 14px;
+    color: var(--ash);
+    line-height: 1.8;
+    margin-bottom: 48px;
+    font-weight: 300;
+  }
+
+  .src-section-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--ochre);
+    margin-bottom: 16px;
+    margin-top: 40px;
+  }
+
+  .src-item {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .src-item-title {
+    font-size: 14px;
+    color: var(--cream);
+    font-weight: 400;
+    margin-bottom: 4px;
+    line-height: 1.5;
+  }
+
+  .src-item-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--dim);
+    margin-bottom: 6px;
+    letter-spacing: 0.04em;
+  }
+
+  .src-item-note {
+    font-size: 13px;
+    color: var(--ash);
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  .src-back {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ash);
+    background: transparent;
+    border: 1px solid var(--border);
+    padding: 14px 28px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 48px;
+  }
+
+  .src-back:hover { border-color: var(--gold); color: var(--cream); }
+
+  /* ── ODDS HIGHLIGHT ── */
+  .r-odds-highlight {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(18px, 3vw, 26px);
+    font-weight: 700;
+    color: var(--cream);
+    margin-top: 16px;
+    margin-bottom: 4px;
+    opacity: 0;
+    animation: up 0.6s ease forwards 0.5s;
+  }
+
+  .r-odds-highlight span { color: var(--gold); }
+
+  .r-odds-highlight-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--dim);
+    letter-spacing: 0.08em;
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: up 0.6s ease forwards 0.55s;
+  }
+
+  /* sources link on result page */
+  .r-sources-link {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--dim);
+    cursor: pointer;
+    border-bottom: 1px solid rgba(138,122,96,0.3);
+    padding-bottom: 2px;
+    transition: color 0.2s;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    margin-top: 16px;
+    display: inline-block;
+  }
+
+  .r-sources-link:hover { color: var(--ash); }
+
+  .sc-odds {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--ash);
+    margin-bottom: 20px;
+    letter-spacing: 0.05em;
+  }
+
+  .sc-odds strong { color: var(--gold); }
+
+  @keyframes up {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .fade { opacity: 0; animation: up 0.45s ease forwards; }
 </style>
-
 </head>
 <body>
 
 <!-- INTRO -->
-
 <div id="intro" class="screen active">
   <div class="eyebrow">A system designed to sort</div>
   <h1 class="headline">What were<br><em>your</em> odds?</h1>
@@ -987,7 +986,6 @@ to { opacity: 1; transform: translateY(0); }
 </div>
 
 <!-- QUESTIONS -->
-
 <div id="questions" class="screen">
   <div class="progress-bar" id="prog"></div>
   <div class="q-counter" id="counter"></div>
@@ -995,7 +993,6 @@ to { opacity: 1; transform: translateY(0); }
 </div>
 
 <!-- CALCULATING -->
-
 <div id="calculating" class="screen">
   <div class="calc-eyebrow">Mapping your chain</div>
   <div class="calc-chain" id="calcRows"></div>
@@ -1006,192 +1003,179 @@ to { opacity: 1; transform: translateY(0); }
 </div>
 
 <!-- RESULT -->
-
 <div id="result" class="screen">
   <div class="result-wrap">
     <div class="r-eyebrow">Your structural portrait</div>
     <div class="r-name" id="rName"></div>
 
-```
-<div class="r-percentile-wrap" id="rPctWrap"></div>
+    <div class="r-percentile-wrap" id="rPctWrap"></div>
 
-<div class="r-divider"></div>
+    <div class="r-divider"></div>
 
-<div class="r-section a1">Your chain</div>
-<div class="r-chain" id="rChain"></div>
+    <div class="r-section a1">Your chain</div>
+    <div class="r-chain" id="rChain"></div>
 
-<div class="r-section a2">The typical path</div>
-<div class="r-typical" id="rTypical"></div>
+    <div class="r-section a2">The typical path</div>
+    <div class="r-typical" id="rTypical"></div>
 
-<div class="r-seed" id="rSeed"></div>
+    <div class="r-seed" id="rSeed"></div>
 
-<div class="r-actions">
-  <button class="btn-share" onclick="openShare()">Share My Odds</button>
-  <button class="btn-deep" onclick="showScreen('goDeeper')">Go Deeper →</button>
-</div>
-<div style="margin-top:20px;">
-  <button class="r-sources-link" onclick="showScreen('sources')">How are these odds calculated? →</button>
-</div>
-```
-
+    <div class="r-actions">
+      <button class="btn-share" onclick="openShare()">Share My Odds</button>
+      <button class="btn-deep" onclick="showScreen('goDeeper')">Go Deeper →</button>
+    </div>
+    <div style="margin-top:20px;">
+      <button class="r-sources-link" onclick="showScreen('sources')">How are these odds calculated? →</button>
+    </div>
   </div>
 </div>
 
 <!-- GO DEEPER -->
-
 <div id="goDeeper" class="screen">
   <div class="gd-wrap">
     <div class="gd-eyebrow">Continue the conversation</div>
     <h2 class="gd-headline">Go deeper with an AI conversation.</h2>
     <p class="gd-sub">Your portrait is a starting point. The deeper experience is a structured conversation that helps you see your specific chain of contingencies — the people, programs, accidents of timing — that account for where you landed relative to where the system predicted you would. It takes 30–60 minutes and costs nothing.*</p>
 
-```
-<div class="gd-step">
-  <div class="gd-step-num">1</div>
-  <div class="gd-step-text">Click the button below to <strong>copy your personal prompt</strong> to your clipboard. It contains your name and percentile so the conversation starts where your portrait left off.</div>
-</div>
-<div class="gd-step">
-  <div class="gd-step-num">2</div>
-  <div class="gd-step-text">Open a free AI chat. Any of these work — no account required for basic use:<br><br>
-    <div class="gd-links">
-      <a class="gd-link" href="https://claude.ai" target="_blank">Claude.ai</a>
-      <a class="gd-link" href="https://chat.openai.com" target="_blank">ChatGPT</a>
-      <a class="gd-link" href="https://gemini.google.com" target="_blank">Gemini</a>
+    <div class="gd-step">
+      <div class="gd-step-num">1</div>
+      <div class="gd-step-text">Click the button below to <strong>copy your personal prompt</strong> to your clipboard. It contains your name and percentile so the conversation starts where your portrait left off.</div>
     </div>
-  </div>
-</div>
-<div class="gd-step">
-  <div class="gd-step-num">3</div>
-  <div class="gd-step-text"><strong>Paste the prompt</strong> into the chat and press send. The conversation will begin immediately. Answer honestly — the experience only works if you do.</div>
-</div>
-<div class="gd-step">
-  <div class="gd-step-num">4</div>
-  <div class="gd-step-text">The conversation will end not with a verdict but with <strong>a question you carry forward</strong>. There's no right conclusion — only a clearer view of the system that shaped you.</div>
-</div>
+    <div class="gd-step">
+      <div class="gd-step-num">2</div>
+      <div class="gd-step-text">Open a free AI chat. Any of these work — no account required for basic use:<br><br>
+        <div class="gd-links">
+          <a class="gd-link" href="https://claude.ai" target="_blank">Claude.ai</a>
+          <a class="gd-link" href="https://chat.openai.com" target="_blank">ChatGPT</a>
+          <a class="gd-link" href="https://gemini.google.com" target="_blank">Gemini</a>
+        </div>
+      </div>
+    </div>
+    <div class="gd-step">
+      <div class="gd-step-num">3</div>
+      <div class="gd-step-text"><strong>Paste the prompt</strong> into the chat and press send. The conversation will begin immediately. Answer honestly — the experience only works if you do.</div>
+    </div>
+    <div class="gd-step">
+      <div class="gd-step-num">4</div>
+      <div class="gd-step-text">The conversation will end not with a verdict but with <strong>a question you carry forward</strong>. There's no right conclusion — only a clearer view of the system that shaped you.</div>
+    </div>
 
-<div class="gd-prompt-box" id="gdPromptPreview">Your prompt will appear here after you copy it.</div>
+    <div class="gd-prompt-box" id="gdPromptPreview">Your prompt will appear here after you copy it.</div>
 
-<div style="display:flex;gap:14px;flex-wrap:wrap;">
-  <button class="btn-start" style="font-size:12px;padding:15px 28px;" onclick="copyDeepPrompt()">Copy My Prompt</button>
-  <button class="src-back" onclick="showScreen('result')">← Back to Portrait</button>
-</div>
+    <div style="display:flex;gap:14px;flex-wrap:wrap;">
+      <button class="btn-start" style="font-size:12px;padding:15px 28px;" onclick="copyDeepPrompt()">Copy My Prompt</button>
+      <button class="src-back" onclick="showScreen('result')">← Back to Portrait</button>
+    </div>
 
-<p style="margin-top:32px;font-family:'DM Mono',monospace;font-size:10px;color:var(--dim);line-height:1.7;letter-spacing:0.04em;">* "Free" isn't free. Running AI models requires significant compute — energy, water for cooling, hardware at scale. The free tiers offered by AI companies are subsidized by investors and infrastructure costs that are real, even when they don't appear on your bill. Using these tools thoughtfully is its own kind of literacy.</p>
-```
-
+    <p style="margin-top:32px;font-family:'DM Mono',monospace;font-size:10px;color:var(--dim);line-height:1.7;letter-spacing:0.04em;">* "Free" isn't free. Running AI models requires significant compute — energy, water for cooling, hardware at scale. The free tiers offered by AI companies are subsidized by investors and infrastructure costs that are real, even when they don't appear on your bill. Using these tools thoughtfully is its own kind of literacy.</p>
   </div>
 </div>
 
 <!-- SOURCES -->
-
 <div id="sources" class="screen">
   <div class="src-wrap">
     <div class="src-eyebrow">Methodology & Sources</div>
     <h2 class="src-headline">How the odds are calculated.</h2>
     <p class="src-intro">This tool models the structural sorting system of the United States using a chain of conditional probability multipliers — each one derived from peer-reviewed research on the relationship between demographic starting conditions and life outcomes. The evidence base draws from three tiers: administrative and government data (descriptive baselines), top-tier academic research using quasi-experimental and natural experiment designs (causal estimates), and foundational sociological theory (mechanisms). Where sources are descriptive rather than causal, this is noted. The model does not claim to be a complete account of any individual life. It claims to make visible what the data consistently show: that starting conditions are among the strongest predictors of where people land, and that those conditions are not equally shared.</p>
 
-```
-<div class="src-section-title">The model</div>
+    <div class="src-section-title">The model</div>
 
-<div class="src-item">
-  <div class="src-item-title">Structural multiplier approach</div>
-  <div class="src-item-note">Each demographic input is assigned a multiplier based on the relative probability of achieving above-median educational and economic outcomes given that starting condition. Multipliers compound across inputs. The result is a structural difficulty score that is then converted to a percentile using a log scale anchored at observed minimum and maximum values across the input space. The birth cohort size is provided as context but is not part of the structural score.</div>
-</div>
+    <div class="src-item">
+      <div class="src-item-title">Structural multiplier approach</div>
+      <div class="src-item-note">Each demographic input is assigned a multiplier based on the relative probability of achieving above-median educational and economic outcomes given that starting condition. Multipliers compound across inputs. The result is a structural difficulty score that is then converted to a percentile using a log scale anchored at observed minimum and maximum values across the input space. The birth cohort size is provided as context but is not part of the structural score.</div>
+    </div>
 
-<div class="src-item">
-  <div class="src-item-title">Percentile calibration</div>
-  <div class="src-item-note">The 50th percentile is anchored at a structural multiplier of approximately 6 — representing a white or Asian-American male born to one immigrant parent with a high school diploma, in a working-class neighborhood with some economic instability, who completed a bachelor's degree with limited institutional guidance. This approximates the median structural profile of the US adult population given observed demographic distributions.</div>
-</div>
+    <div class="src-item">
+      <div class="src-item-title">Percentile calibration</div>
+      <div class="src-item-note">The 50th percentile is anchored at a structural multiplier of approximately 6 — representing a white or Asian-American male born to one immigrant parent with a high school diploma, in a working-class neighborhood with some economic instability, who completed a bachelor's degree with limited institutional guidance. This approximates the median structural profile of the US adult population given observed demographic distributions.</div>
+    </div>
 
-<div class="src-section-title">Sources by variable</div>
+    <div class="src-section-title">Sources by variable</div>
 
-<div class="src-item">
-  <div class="src-item-title">Race & ethnicity multipliers</div>
-  <div class="src-item-meta">Racial wealth gap, educational attainment, incarceration disparities, and hiring discrimination</div>
-  <div class="src-item-note">
-    <strong>Descriptive:</strong> Bhutta et al. (2020), "Disparities in Wealth by Race and Ethnicity in the 2019 Survey of Consumer Finances," Federal Reserve Board. — NCES (2022), "Status and Trends in the Education of Racial and Ethnic Groups." — Carson (2020), "Prisoners in 2019," Bureau of Justice Statistics. — Pew Research Center (2016), "On Views of Race and Inequality" [note: this source documents perceptions of inequality, not structural inequality itself].<br><br>
-    <strong>Causal:</strong> Kline, P., Rose, E.K., & Walters, C.R. (2022), "Systemic Discrimination Among Large U.S. Employers," Quarterly Journal of Economics, 137(4), 1963–2036. [83,000 fictitious résumés; Black names received 2.1 percentage point lower callback rates; firm-level discrimination identified causally] — Bohren, J.A., Hull, P., & Imas, A. (2025), "Systemic Discrimination: Theory and Measurement," Quarterly Journal of Economics, 140(3), 1743–1799. [iterated audit design showing how direct discrimination compounds across hiring rounds]
-  </div>
-</div>
+    <div class="src-item">
+      <div class="src-item-title">Race & ethnicity multipliers</div>
+      <div class="src-item-meta">Racial wealth gap, educational attainment, incarceration disparities, and hiring discrimination</div>
+      <div class="src-item-note">
+        <strong>Descriptive:</strong> Bhutta et al. (2020), "Disparities in Wealth by Race and Ethnicity in the 2019 Survey of Consumer Finances," Federal Reserve Board. — NCES (2022), "Status and Trends in the Education of Racial and Ethnic Groups." — Carson (2020), "Prisoners in 2019," Bureau of Justice Statistics. — Pew Research Center (2016), "On Views of Race and Inequality" [note: this source documents perceptions of inequality, not structural inequality itself].<br><br>
+        <strong>Causal:</strong> Kline, P., Rose, E.K., & Walters, C.R. (2022), "Systemic Discrimination Among Large U.S. Employers," Quarterly Journal of Economics, 137(4), 1963–2036. [83,000 fictitious résumés; Black names received 2.1 percentage point lower callback rates; firm-level discrimination identified causally] — Bohren, J.A., Hull, P., & Imas, A. (2025), "Systemic Discrimination: Theory and Measurement," Quarterly Journal of Economics, 140(3), 1743–1799. [iterated audit design showing how direct discrimination compounds across hiring rounds]
+      </div>
+    </div>
 
-<div class="src-item">
-  <div class="src-item-title">Gender multipliers</div>
-  <div class="src-item-meta">Wage gap, occupational segregation, caregiving penalties, dynamic discrimination</div>
-  <div class="src-item-note">
-    <strong>Descriptive:</strong> BLS (2023), "Highlights of Women's Earnings in 2022." — Goldin, C. (2014), "A Grand Gender Convergence: Its Last Chapter," American Economic Review. [note: Goldin documents why convergence slows, not raw gap size — still directionally supports the multiplier].<br><br>
-    <strong>Causal:</strong> Correll, S., Benard, S., & Paik, I. (2007), "Getting a Job: Is There a Motherhood Penalty?" American Journal of Sociology. [audit experiment; mothers penalized relative to non-mothers and men] — Bohren, J.A., Imas, A., & Rosenberg, M. (2019), "The Dynamics of Discrimination: Theory and Evidence," American Economic Review, 109(10), 3395–3436. [field experiment showing how initial gender bias compounds over evaluation history]
-  </div>
-</div>
+    <div class="src-item">
+      <div class="src-item-title">Gender multipliers</div>
+      <div class="src-item-meta">Wage gap, occupational segregation, caregiving penalties, dynamic discrimination</div>
+      <div class="src-item-note">
+        <strong>Descriptive:</strong> BLS (2023), "Highlights of Women's Earnings in 2022." — Goldin, C. (2014), "A Grand Gender Convergence: Its Last Chapter," American Economic Review. [note: Goldin documents why convergence slows, not raw gap size — still directionally supports the multiplier].<br><br>
+        <strong>Causal:</strong> Correll, S., Benard, S., & Paik, I. (2007), "Getting a Job: Is There a Motherhood Penalty?" American Journal of Sociology. [audit experiment; mothers penalized relative to non-mothers and men] — Bohren, J.A., Imas, A., & Rosenberg, M. (2019), "The Dynamics of Discrimination: Theory and Evidence," American Economic Review, 109(10), 3395–3436. [field experiment showing how initial gender bias compounds over evaluation history]
+      </div>
+    </div>
 
-<div class="src-item">
-  <div class="src-item-title">Parental education multipliers</div>
-  <div class="src-item-meta">Intergenerational transmission of educational attainment and economic mobility</div>
-  <div class="src-item-note">
-    <strong>Descriptive:</strong> Torche, F. (2011), "Is a College Degree Still the Great Equalizer?" American Journal of Sociology. — NCES (2019), "First-Generation Students: College Access, Persistence, and Postbachelor's Outcomes." — Pew Research Center (2015), "The American Middle Class Is Losing Ground."<br><br>
-    <strong>Causal:</strong> Chetty, R., Friedman, J., Saez, E., Turner, N., & Yagan, D. (2020), "Income Segregation and Intergenerational Mobility Across Colleges in the United States," Quarterly Journal of Economics. [administrative tax data; parental income rank strongly predicts children's college attendance and adult earnings, capturing both education and class transmission]
-  </div>
-</div>
+    <div class="src-item">
+      <div class="src-item-title">Parental education multipliers</div>
+      <div class="src-item-meta">Intergenerational transmission of educational attainment and economic mobility</div>
+      <div class="src-item-note">
+        <strong>Descriptive:</strong> Torche, F. (2011), "Is a College Degree Still the Great Equalizer?" American Journal of Sociology. — NCES (2019), "First-Generation Students: College Access, Persistence, and Postbachelor's Outcomes." — Pew Research Center (2015), "The American Middle Class Is Losing Ground."<br><br>
+        <strong>Causal:</strong> Chetty, R., Friedman, J., Saez, E., Turner, N., & Yagan, D. (2020), "Income Segregation and Intergenerational Mobility Across Colleges in the United States," Quarterly Journal of Economics. [administrative tax data; parental income rank strongly predicts children's college attendance and adult earnings, capturing both education and class transmission]
+      </div>
+    </div>
 
-<div class="src-item">
-  <div class="src-item-title">Immigrant parent multipliers</div>
-  <div class="src-item-meta">Immigrant generation effects on education, income, and institutional navigation</div>
-  <div class="src-item-note">
-    <strong>Descriptive:</strong> Portes, A. & Rumbaut, R. (2001), Legacies: The Story of the Immigrant Second Generation. — NCES (2019), data on first-generation and language-minority students.<br><br>
-    <strong>Causal context:</strong> Chetty, R. et al. (2017), "The Fading American Dream: Trends in Absolute Income Mobility Since 1940," Science, 356(6336), 398–406. [note: this establishes baseline mobility trends for all Americans, not immigrant-specific effects — used here as mobility context] — Abramitzky, R. & Boustan, L. (2022), Streets of Gold: America's Untold Story of Immigrant Success. [historical and quasi-experimental evidence on immigrant mobility patterns across generations]
-  </div>
-</div>
+    <div class="src-item">
+      <div class="src-item-title">Immigrant parent multipliers</div>
+      <div class="src-item-meta">Immigrant generation effects on education, income, and institutional navigation</div>
+      <div class="src-item-note">
+        <strong>Descriptive:</strong> Portes, A. & Rumbaut, R. (2001), Legacies: The Story of the Immigrant Second Generation. — NCES (2019), data on first-generation and language-minority students.<br><br>
+        <strong>Causal context:</strong> Chetty, R. et al. (2017), "The Fading American Dream: Trends in Absolute Income Mobility Since 1940," Science, 356(6336), 398–406. [note: this establishes baseline mobility trends for all Americans, not immigrant-specific effects — used here as mobility context] — Abramitzky, R. & Boustan, L. (2022), Streets of Gold: America's Untold Story of Immigrant Success. [historical and quasi-experimental evidence on immigrant mobility patterns across generations]
+      </div>
+    </div>
 
-<div class="src-item">
-  <div class="src-item-title">Neighborhood multipliers</div>
-  <div class="src-item-meta">Place-based causal effects on mobility and opportunity — strongest causal domain in the model</div>
-  <div class="src-item-note">
-    <strong>Causal:</strong> Chetty, R. & Hendren, N. (2018), "The Impacts of Neighborhoods on Intergenerational Mobility I & II," Quarterly Journal of Economics, 133(3). [quasi-experimental; childhood exposure effects on adult income causally estimated] — Chetty, R., Hendren, N., & Katz, L. (2016), "The Effects of Exposure to Better Neighborhoods on Children," American Economic Review. [Moving to Opportunity RCT; randomized housing vouchers show causal income gains for children who moved] — Chyn, E. (2018), "Moved to Opportunity," American Economic Review, 108(10), 3028–3056. [public housing demolition as natural experiment; improved long-run outcomes for displaced children]<br><br>
-    <strong>Theoretical foundations:</strong> Wilson, W.J. (1987), The Truly Disadvantaged. — Sampson, R. (2012), Great American City: Chicago and the Enduring Neighborhood Effect.
-  </div>
-</div>
+    <div class="src-item">
+      <div class="src-item-title">Neighborhood multipliers</div>
+      <div class="src-item-meta">Place-based causal effects on mobility and opportunity — strongest causal domain in the model</div>
+      <div class="src-item-note">
+        <strong>Causal:</strong> Chetty, R. & Hendren, N. (2018), "The Impacts of Neighborhoods on Intergenerational Mobility I & II," Quarterly Journal of Economics, 133(3). [quasi-experimental; childhood exposure effects on adult income causally estimated] — Chetty, R., Hendren, N., & Katz, L. (2016), "The Effects of Exposure to Better Neighborhoods on Children," American Economic Review. [Moving to Opportunity RCT; randomized housing vouchers show causal income gains for children who moved] — Chyn, E. (2018), "Moved to Opportunity," American Economic Review, 108(10), 3028–3056. [public housing demolition as natural experiment; improved long-run outcomes for displaced children]<br><br>
+        <strong>Theoretical foundations:</strong> Wilson, W.J. (1987), The Truly Disadvantaged. — Sampson, R. (2012), Great American City: Chicago and the Enduring Neighborhood Effect.
+      </div>
+    </div>
 
-<div class="src-item">
-  <div class="src-item-title">Economic stability multipliers</div>
-  <div class="src-item-meta">Income volatility as distinct from income level; consumption shocks and child outcomes</div>
-  <div class="src-item-note">
-    <strong>Descriptive / mechanistic:</strong> Morduch, J. & Schneider, R. (2017), The Financial Diaries: How American Families Cope in a World of Uncertainty. — Duncan, G. & Brooks-Gunn, J. (1997), Consequences of Growing Up Poor.<br><br>
-    <strong>Causal:</strong> Ganong, P. & Noel, P. (2019), "Consumer Spending during Unemployment: Positive and Normative Implications," American Economic Review, 109(7), 2383–2424. [de-identified bank account data; spending drops sharply at predictable income decline — causal evidence that income shocks drive consumption instability independently of baseline income level]
-  </div>
-</div>
+    <div class="src-item">
+      <div class="src-item-title">Economic stability multipliers</div>
+      <div class="src-item-meta">Income volatility as distinct from income level; consumption shocks and child outcomes</div>
+      <div class="src-item-note">
+        <strong>Descriptive / mechanistic:</strong> Morduch, J. & Schneider, R. (2017), The Financial Diaries: How American Families Cope in a World of Uncertainty. — Duncan, G. & Brooks-Gunn, J. (1997), Consequences of Growing Up Poor.<br><br>
+        <strong>Causal:</strong> Ganong, P. & Noel, P. (2019), "Consumer Spending during Unemployment: Positive and Normative Implications," American Economic Review, 109(7), 2383–2424. [de-identified bank account data; spending drops sharply at predictable income decline — causal evidence that income shocks drive consumption instability independently of baseline income level]
+      </div>
+    </div>
 
-<div class="src-item">
-  <div class="src-item-title">Educational attainment multipliers</div>
-  <div class="src-item-meta">Returns to education by credential level</div>
-  <div class="src-item-note">
-    <strong>Descriptive:</strong> BLS (2023), "Education Pays," Occupational Outlook Handbook. — Hout, M. (2012), "Social and Economic Returns to College Education in the United States," Annual Review of Sociology.<br><br>
-    <strong>Causal:</strong> Autor, D. (2014), "Skills, Education, and the Rise of Earnings Inequality Among the 'Other 99 Percent,'" Science. [documents skill-biased technological change driving credential premiums; partially causal via structural labor market analysis]
-  </div>
-</div>
+    <div class="src-item">
+      <div class="src-item-title">Educational attainment multipliers</div>
+      <div class="src-item-meta">Returns to education by credential level</div>
+      <div class="src-item-note">
+        <strong>Descriptive:</strong> BLS (2023), "Education Pays," Occupational Outlook Handbook. — Hout, M. (2012), "Social and Economic Returns to College Education in the United States," Annual Review of Sociology.<br><br>
+        <strong>Causal:</strong> Autor, D. (2014), "Skills, Education, and the Rise of Earnings Inequality Among the 'Other 99 Percent,'" Science. [documents skill-biased technological change driving credential premiums; partially causal via structural labor market analysis]
+      </div>
+    </div>
 
-<div class="src-item">
-  <div class="src-item-title">Institutional knowledge / social capital multipliers</div>
-  <div class="src-item-meta">First-generation navigation, information access, and college opportunity</div>
-  <div class="src-item-note">
-    <strong>Theoretical / mechanistic:</strong> Putnam, R. (2015), Our Kids: The American Dream in Crisis. — Jack, A. (2019), The Privileged Poor: How Elite Colleges Are Failing Disadvantaged Students. — Lareau, A. (2003), Unequal Childhoods: Class, Race, and Family Life.<br><br>
-    <strong>Causal:</strong> Hoxby, C. & Turner, S. (2015), "What High-Achieving Low-Income Students Know about College," American Economic Review, 105(5), 514–517. [RCT; personalized college information intervention significantly raised low-income students' applications to, enrollment in, and persistence at selective colleges — information access is causally consequential]
-  </div>
-</div>
+    <div class="src-item">
+      <div class="src-item-title">Institutional knowledge / social capital multipliers</div>
+      <div class="src-item-meta">First-generation navigation, information access, and college opportunity</div>
+      <div class="src-item-note">
+        <strong>Theoretical / mechanistic:</strong> Putnam, R. (2015), Our Kids: The American Dream in Crisis. — Jack, A. (2019), The Privileged Poor: How Elite Colleges Are Failing Disadvantaged Students. — Lareau, A. (2003), Unequal Childhoods: Class, Race, and Family Life.<br><br>
+        <strong>Causal:</strong> Hoxby, C. & Turner, S. (2015), "What High-Achieving Low-Income Students Know about College," American Economic Review, 105(5), 514–517. [RCT; personalized college information intervention significantly raised low-income students' applications to, enrollment in, and persistence at selective colleges — information access is causally consequential]
+      </div>
+    </div>
 
-<div class="src-section-title">Limitations</div>
+    <div class="src-section-title">Limitations</div>
 
-<div class="src-item">
-  <div class="src-item-title">What this model does not capture</div>
-  <div class="src-item-note">Disability status, sexual orientation and gender identity beyond the binary, undocumented immigration status, regional variation within the US, specific state-level policy environments, the role of individual contingency (a teacher, a program, a moment of luck), and the interaction effects between variables beyond what the multiplicative model approximates. The model is a simplification. It is designed to make structural forces legible, not to provide a complete account of any individual life.</div>
-</div>
+    <div class="src-item">
+      <div class="src-item-title">What this model does not capture</div>
+      <div class="src-item-note">Disability status, sexual orientation and gender identity beyond the binary, undocumented immigration status, regional variation within the US, specific state-level policy environments, the role of individual contingency (a teacher, a program, a moment of luck), and the interaction effects between variables beyond what the multiplicative model approximates. The model is a simplification. It is designed to make structural forces legible, not to provide a complete account of any individual life.</div>
+    </div>
 
-<button class="src-back" onclick="showScreen('result')">← Back to Portrait</button>
-```
-
+    <button class="src-back" onclick="showScreen('result')">← Back to Portrait</button>
   </div>
 </div>
 
 <!-- SHARE -->
-
 <div class="overlay" id="shareOverlay">
   <div class="share-card">
     <div class="sc-eyebrow">The Odds</div>
@@ -1863,6 +1847,5 @@ function showScreen(id) {
   window.scrollTo(0,0);
 }
 </script>
-
 </body>
 </html>
