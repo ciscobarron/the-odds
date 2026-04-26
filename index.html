@@ -531,8 +531,25 @@
     border-bottom: 1px solid rgba(212,146,15,0.1);
   }
 
-  .chain-filter { font-size: 13px; color: var(--pale); font-weight: 300; max-width: 72%; line-height: 1.4; }
-  .chain-mult { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--gold); white-space: nowrap; }
+  .chain-row.interaction {
+    background: rgba(240,176,48,0.04);
+    border-bottom: 1px dashed rgba(212,146,15,0.15);
+  }
+
+  .chain-row.interaction .chain-filter {
+    font-style: italic;
+    color: #c8b898;
+    color: var(--ash);
+    font-size: 12px;
+  }
+
+  .chain-row.interaction .chain-mult {
+    color: #c8b898;
+    color: var(--ash);
+  }
+
+  .chain-filter { font-size: 13px; color: #e8dcc4; color: var(--pale); font-weight: 300; max-width: 72%; line-height: 1.4; }
+  .chain-mult { font-family: 'DM Mono', monospace; font-size: 12px; color: #f0b030; color: var(--gold); white-space: nowrap; }
 
   .r-typical {
     background: var(--card);
@@ -1091,7 +1108,7 @@
   <div class="src-wrap">
     <div class="src-eyebrow">Methodology & Sources</div>
     <h2 class="src-headline">How the odds are calculated.</h2>
-    <p class="src-intro">This tool models the structural sorting system of the United States using a chain of conditional probability multipliers — each one derived from peer-reviewed research on the relationship between demographic starting conditions and life outcomes. The evidence base draws from three tiers: administrative and government data (descriptive baselines), top-tier academic research using quasi-experimental and natural experiment designs (causal estimates), and foundational sociological theory (mechanisms). Where sources are descriptive rather than causal, this is noted. The model does not claim to be a complete account of any individual life. It claims to make visible what the data consistently show: that starting conditions are among the strongest predictors of where people land, and that those conditions are not equally shared.</p>
+    <p class="src-intro">This tool models the structural sorting system of the United States using a chain of conditional probability multipliers — each one derived from peer-reviewed research on the relationship between demographic starting conditions and life outcomes. The evidence base draws from three tiers: administrative and government data (descriptive baselines), top-tier academic research using quasi-experimental and natural experiment designs (causal estimates), and foundational sociological theory (mechanisms). Where sources are descriptive rather than causal, this is noted. The model also applies three empirically-grounded interaction effects where variables are known to moderate each other rather than compound independently — these appear as separate rows in the chain. The model does not claim to be a complete account of any individual life. It claims to make visible what the data consistently show: that starting conditions are among the strongest predictors of where people land, and that those conditions are not equally shared.</p>
 
     <div class="src-section-title">The model</div>
 
@@ -1103,6 +1120,31 @@
     <div class="src-item">
       <div class="src-item-title">Percentile calibration</div>
       <div class="src-item-note">The 50th percentile is anchored at a structural multiplier of approximately 6 — representing a white or Asian-American male born to one immigrant parent with a high school diploma, in a working-class neighborhood with some economic instability, who completed a bachelor's degree with limited institutional guidance. This approximates the median structural profile of the US adult population given observed demographic distributions.</div>
+    </div>
+
+    <div class="src-section-title">Interaction effects</div>
+
+    <div class="src-item">
+      <div class="src-item-title">Why variables interact rather than simply compound</div>
+      <div class="src-item-note">The model applies three empirically-grounded interaction adjustments where the research shows variables moderate each other rather than operating independently. These appear as separate rows in the chain display, styled distinctly from the base multipliers.</div>
+    </div>
+
+    <div class="src-item">
+      <div class="src-item-title">Interaction 1 — Affluent neighborhood dampens parental education penalty (× 0.65)</div>
+      <div class="src-item-meta">School quality as partial substitute for parental educational capital</div>
+      <div class="src-item-note">Applied when: neighborhood is middle-class or affluent AND parental education is high school diploma or less.<br><br>Wodtke, G.T., Harding, D.J., & Elwert, F. (2011), "Neighborhood Effects in Temporal Perspective," American Sociological Review, 76(5), 713–736. [growing up in the most disadvantaged neighborhood lowers high school graduation by 20 percentage points — implies affluent neighborhoods provide substantial independent educational lift] — Chetty, R. & Friedman, J. (2011), cited in Chetty & Hendren (2018): 40% of the correlation between parental earnings and children's future earnings is attributable to school quality differences. This means school quality — provided by affluent neighborhoods independently of parental education — substitutes for approximately 40% of the parental education effect.</div>
+    </div>
+
+    <div class="src-item">
+      <div class="src-item-title">Interaction 2 — Race moderates parental education advantage for Black Americans (× 1.4)</div>
+      <div class="src-item-meta">Diminished return on parental educational capital due to persistent discrimination</div>
+      <div class="src-item-note">Applied when: race = Black AND parental education is bachelor's degree or higher.<br><br>Assari, S. & Mistry, R. (2018), "Educational Attainment and Intergenerational Mobility; Role of Race and Gender," Behavioral Sciences, 8(11), 107. [significant interaction between race and parental education: parental education produces smaller intergenerational mobility gains for African Americans than for white Americans] — Mechanism: high social status increases contact with white-dominated institutions, which increases exposure to discrimination. As a result, returns to parental educational attainment are systematically smaller for Black Americans. Chetty et al. (2024, "Changing Opportunity"): racial convergence in mobility occurred largely through improved chances for Black children to escape poverty, not through increased access to the top of the income distribution — confirming that upper-end advantages are differentially accessible by race.</div>
+    </div>
+
+    <div class="src-item">
+      <div class="src-item-title">Interaction 3 — Low-income neighborhood compounds with low parental education via peer community effects (× 1.2)</div>
+      <div class="src-item-meta">Social network homophily amplifies co-occurring disadvantages</div>
+      <div class="src-item-note">Applied when: neighborhood is low-income or frequent moves AND parental education is less than high school.<br><br>Chetty, R., Friedman, J., et al. (2024), "Changing Opportunity: Sociological Mechanisms Underlying Growing Class and Shrinking Race Gaps in Economic Mobility," Opportunity Insights Working Paper. [children's outcomes most strongly associated with parental employment rates of peers in same race and class group; effects decay sharply for adjacent cohorts, consistent with social network homophily — low-income children in low-parental-education households face compounded peer community effects beyond simple resource addition] — Crowder, K. & South, S. (2003): for Black adolescents from single-parent households and white adolescents from low-income households, the association between neighborhood disadvantage and dropout risk is particularly strong, consistent with compounding rather than additive effects.</div>
     </div>
 
     <div class="src-section-title">Sources by variable</div>
@@ -1598,6 +1640,74 @@ function calcOdds() {
   const mp = mm[a.map]||{l:'Institutional knowledge access',p:'× 1.5',v:1.5};
   rows.push({l:mp.l,p:mp.p}); structural*=mp.v;
 
+
+  // ─── INTERACTION EFFECTS ────────────────────────────────────────────────────
+  // These adjustments reflect empirically documented moderation effects where
+  // variables do not simply compound independently but dampen or amplify each other.
+
+  // INTERACTION 1 — Affluent/middle-class neighborhood dampens parental education penalty
+  // Source: Wodtke, Harding & Elwert (2011, AJS): neighborhood disadvantage
+  // lowers HS graduation by 20pp; Chetty & Friedman (2011): 40% of parental
+  // income→child outcome correlation runs through school quality, which
+  // affluent neighborhoods provide independently of parental education.
+  // Operationalization: when neighborhood is affluent or middle-class AND
+  // parental education is less than high school or HS diploma, reduce the
+  // structural score by 35% to reflect school quality substitution effect.
+  const affluentNeighborhood = ['Middle class — most families were comfortable',
+    'Affluent — most families had significant resources'].includes(a.neighborhood);
+  const lowParentEdu = ['Less than high school','High school diploma or GED'].includes(a.parentEdu);
+  if (affluentNeighborhood && lowParentEdu) {
+    structural *= 0.65;
+    rows.push({
+      l:'Interaction: affluent neighborhood partially substitutes for parental education (school quality effect)',
+      p:'× 0.65',
+      interaction: true
+    });
+  }
+
+  // INTERACTION 2 — Race moderates parental education advantage for Black Americans
+  // Source: Assari & Mistry (2018, MDPI Behavioral Sciences): significant
+  // interaction between race and parental education — parental education
+  // produces smaller intergenerational mobility gains for Black Americans
+  // than for white Americans due to persistent discrimination at higher
+  // income/status levels. College-educated Black parents transmit less
+  // advantage than college-educated white parents.
+  // Operationalization: when race = Black AND parental education is bachelor's
+  // or graduate degree, increase structural score by 40% to reflect diminished
+  // return on parental educational advantage.
+  const isBlackRace = a.race === 'Black / African-American';
+  const highParentEdu = ["Bachelor's degree",'Graduate or professional degree'].includes(a.parentEdu);
+  if (isBlackRace && highParentEdu) {
+    structural *= 1.4;
+    rows.push({
+      l:'Interaction: parental education advantage diminished for Black Americans — persistent discrimination at higher status levels',
+      p:'× 1.4',
+      interaction: true
+    });
+  }
+
+  // INTERACTION 3 — Neighborhood and parental income interact via peer community effects
+  // Source: Chetty, Friedman et al. (2024, "Changing Opportunity"): children's
+  // outcomes most strongly associated with parental employment rates of peers
+  // in same race and class group — effects decay sharply for adjacent cohorts,
+  // consistent with homophily in social networks. Low-income neighborhood
+  // compounds with low parental education through shared peer community
+  // mechanism, not just additive resource deprivation.
+  // Operationalization: when neighborhood is very low income AND parental
+  // education is less than high school, apply 20% amplification to reflect
+  // the peer community compounding effect beyond simple addition.
+  const veryLowNeighborhood = ['We moved a lot — no single place was home',
+    'Low-income — most families were struggling'].includes(a.neighborhood);
+  const veryLowParentEdu = a.parentEdu === 'Less than high school';
+  if (veryLowNeighborhood && veryLowParentEdu) {
+    structural *= 1.2;
+    rows.push({
+      l:'Interaction: low-income neighborhood + low parental education compound via peer community effect',
+      p:'× 1.2',
+      interaction: true
+    });
+  }
+
   // Percentile: log-scale the structural multiplier
   // Baseline (most advantaged) ≈ 0.07, median ≈ 6, most suppressed ≈ 3000+
   // Higher structural score = more headwinds = higher percentile of difficulty
@@ -1634,19 +1744,30 @@ function fmtShort(n) {
 function typical() {
   const a = ans;
   const nm = a.name || 'Someone';
-  const low = ['We moved a lot — no single place was home','Low-income — most families were struggling','Working class — people got by, not much extra'].includes(a.neighborhood);
-  const veryLow = ['We moved a lot — no single place was home','Low-income — most families were struggling'].includes(a.neighborhood);
-  const imm = a.parentOrigin && a.parentOrigin !== 'Both from the US';
-  const lowEdu = ['Less than high school','High school diploma or GED'].includes(a.parentEdu);
-  const high = ['One graduate degree','Multiple graduate degrees',"Bachelor's degree"].includes(a.schooling);
+
+  // Input flags
   const isBlack = a.race === 'Black / African-American';
   const isLatino = a.race === 'Latino / Hispanic';
   const isIndigenous = a.race === 'Indigenous / Native American';
+  const isAsian = a.race === 'Asian / Asian-American';
+  const isMENA = a.race === 'Middle Eastern / North African';
+  const isWhite = a.race === 'White / European-American';
   const isWoman = a.gender === 'Woman / female';
+  const isNonBinary = a.gender === 'Non-binary or gender non-conforming';
+  const imm = a.parentOrigin && a.parentOrigin !== 'Both from the US';
+  const bothImm = ['Both immigrants — same country','Both immigrants — different countries'].includes(a.parentOrigin);
   const moved = a.neighborhood === 'We moved a lot — no single place was home';
+  const veryLow = ['We moved a lot — no single place was home','Low-income — most families were struggling'].includes(a.neighborhood);
+  const low = veryLow || a.neighborhood === 'Working class — people got by, not much extra';
+  const affluent = ['Middle class — most families were comfortable','Affluent — most families had significant resources'].includes(a.neighborhood);
+  const veryLowEdu = a.parentEdu === 'Less than high school';
+  const lowEdu = ['Less than high school','High school diploma or GED'].includes(a.parentEdu);
+  const highEdu = ["Bachelor's degree",'Graduate or professional degree'].includes(a.parentEdu);
+  const unstable = ['Significant instability — real hardship at times','Uncertain — things were tight and unpredictable'].includes(a.stability);
+  const highSchooling = ['One graduate degree','Multiple graduate degrees',"Bachelor's degree"].includes(a.schooling);
+  const noMap = a.map === 'No — I was mostly figuring it out without a map';
 
   // Income delta
-  const startedLow = low;
   const incomeLanded = a.currentIncome || '';
   const landedHigh = ['$100,000 – $200,000','Over $200,000'].includes(incomeLanded);
   const landedMid = ['$60,000 – $100,000'].includes(incomeLanded);
@@ -1654,44 +1775,130 @@ function typical() {
 
   let delta = '';
   if (incomeLanded && incomeLanded !== 'Prefer not to say') {
-    if (startedLow && landedHigh) {
-      delta = ` <strong>The income delta is stark:</strong> you started in a household that was likely earning under $35,000 — and landed at ${incomeLanded}. That crossing represents one of the rarest mobility events in the American data.`;
-    } else if (startedLow && landedMid) {
+    if (low && landedHigh) {
+      delta = ` <strong>The income delta is stark:</strong> you started in a household likely earning under $35,000 — and landed at ${incomeLanded}. That crossing represents one of the rarest mobility events in the American data.`;
+    } else if (low && landedMid) {
       delta = ` <strong>On income:</strong> you moved from a low-income starting point to ${incomeLanded} — a real crossing of the structural threshold that most people who start where you started don't make.`;
-    } else if (startedLow && landedLow) {
-      delta = ` <strong>On income:</strong> at ${incomeLanded}, your household income today is close to where you started — which is exactly what the data predict. The structure that produced your starting conditions tends to reproduce itself across generations.`;
-    } else if (!startedLow && landedHigh) {
+    } else if (low && landedLow) {
+      delta = ` <strong>On income:</strong> at ${incomeLanded}, your household income today is close to where you started — which is exactly what the data predict. The structure that produced your starting conditions tends to reproduce itself.`;
+    } else if (affluent && landedHigh) {
       delta = ` <strong>On income:</strong> at ${incomeLanded}, you landed where the system predicted for someone with your starting conditions — which is itself worth seeing clearly.`;
+    } else if (affluent && landedLow) {
+      delta = ` <strong>On income:</strong> at ${incomeLanded}, you landed below what the system would typically predict for someone who started where you started. That gap has its own story.`;
     }
   }
 
-  let tracks = '';
-  let p = '';
-
+  // ── TRACK 1: EDUCATION ──────────────────────────────────────────────────────
+  let eduTrack = '';
   if (isIndigenous && veryLow) {
-    tracks = `<br><br><strong>The three typical tracks:</strong> Educational attainment for Indigenous Americans in low-income households runs well below national averages — high school completion rates near 70%, bachelor's degree attainment under 15%. Income: median household income for Indigenous Americans is roughly $49,000, with high rates of poverty. Justice system: Indigenous Americans are incarcerated at 2.5× the rate of white Americans — a direct legacy of structural dispossession, not individual choice.`;
-    p = `The typical person who started where <strong>${nm}</strong> started faces the most severe structural suppression in the American data. Historical dispossession, chronic underfunding of tribal schools and services, geographic isolation, and compounding poverty produce a distribution where the modal outcome is truncated education and constrained economic mobility. This is not a story about individual capacity. It is a story about a system that has actively extracted from this community for generations.`;
+    eduTrack = `High school completion for Indigenous Americans in low-income households: approximately 70%. Bachelor's degree attainment: under 15% — among the lowest of any demographic group in the US.`;
   } else if (isBlack && veryLow && lowEdu) {
-    tracks = `<br><br><strong>The three typical tracks:</strong> High school completion for Black men in low-income households: approximately 75–80%. College enrollment among those graduates: under 40%. Income: median earnings for Black men with a high school diploma run roughly $35,000–$42,000. Justice system: Black men are incarcerated at 5× the rate of white men — a sorting mechanism that operates alongside and reinforces every other structural barrier.`;
-    p = `The typical person who started where <strong>${nm}</strong> started encounters the racial wealth gap at every gate — in school funding, in hiring, in lending, in criminal justice exposure. The data show that Black Americans with identical qualifications to white peers earn less, build wealth more slowly, and face steeper climbs at every institutional threshold. The typical person here is capable, hardworking, and systematically underestimated. The distance between their capacity and their outcomes is a measure of structural design, not individual failing.`;
-  } else if ((isLatino || imm) && veryLow && lowEdu) {
-    tracks = `<br><br><strong>The three typical tracks:</strong> High school completion for Latino men from low-income immigrant households: approximately 65–75%. Of those, roughly 20% go on to earn a bachelor's degree. Income: median household income lands between $38,000 and $52,000. Justice system: Latino men are incarcerated at 1.3× the rate of white men — lower than the Black incarceration disparity, but still a meaningful structural filter that removes people from the educational and economic pipeline disproportionately.`;
-    p = `The typical person who started where <strong>${nm}</strong> started is hardworking, capable, and tired in a specific way. They probably finished high school — or came close — but college wasn't something anyone in their world had navigated, so the path there was invisible. They entered the workforce in their late teens or early twenties: service, construction, logistics, care work. They make somewhere between $38,000 and $52,000 a year. They live near where they grew up. They love their family. They've never had a framework that explained the gap between what they sensed they were capable of and what the structure made available to them.`;
+    eduTrack = `High school completion for Black students from low-income households with non-college-educated parents: approximately 75–80%. College enrollment among those graduates: under 40%. Bachelor's degree attainment from this starting point: roughly 15–20%.`;
+  } else if (isBlack && veryLow && highEdu) {
+    eduTrack = `High school completion: high — college-educated parents provide academic scaffolding even in low-income neighborhoods. Bachelor's degree attainment: roughly 40–50%, higher than most low-income profiles but still below the rate for white students from equivalent parental education backgrounds, reflecting documented diminishing returns on parental education for Black Americans.`;
+  } else if (isBlack && affluent) {
+    eduTrack = `High school completion: near universal. Bachelor's degree attainment: 55–65% — higher than most profiles, but research documents that Black Americans in affluent neighborhoods still face discrimination in selective college admissions and hiring that partially offsets neighborhood advantages.`;
+  } else if ((isLatino || bothImm) && veryLow && veryLowEdu) {
+    eduTrack = `High school completion for Latino and immigrant-household students from low-income backgrounds with parents who didn't finish high school: approximately 65–72%. Of those, roughly 18–22% go on to earn a bachelor's degree — constrained heavily by language barriers, financial pressure, and lack of college navigation support.`;
+  } else if ((isLatino || bothImm) && veryLow && lowEdu) {
+    eduTrack = `High school completion: approximately 70–78%. Bachelor's degree attainment: roughly 20–28% — the immigrant parent effect creates both headwinds (navigation gaps, language barriers) and tailwinds (higher educational aspirations documented in the immigrant optimism literature).`;
   } else if (moved && lowEdu) {
-    tracks = `<br><br><strong>The three typical tracks:</strong> Frequent childhood moves are among the strongest predictors of school disengagement — each move corresponds to roughly a 4–6 month academic setback. High school completion rates for students who moved 3+ times in childhood run 10–15 points below average. Income: highly variable but trending lower due to interrupted social capital and credential gaps. Justice system exposure: elevated among high-mobility youth due to neighborhood instability and school disengagement.`;
-    p = `The typical person who started where <strong>${nm}</strong> started never had the chance to put down roots — in a school, in a neighborhood, in a peer group that knew them. Each move reset the social capital that turns into academic scaffolding. The system sorts heavily by stability, and instability — regardless of cause — compounds into educational gaps, network gaps, and economic gaps that are difficult to close.`;
+    eduTrack = `High school completion rates for students who moved 3+ times in childhood run 10–15 points below the national average — each move corresponds to roughly a 4–6 month academic setback. Bachelor's degree attainment from this starting point: under 20%.`;
   } else if (isWoman && veryLow) {
-    tracks = `<br><br><strong>The three typical tracks:</strong> Women from low-income households face interrupted education at higher rates than men from the same backgrounds — caregiving responsibilities arrive earlier and pull harder. Income: women in this profile earn roughly $28,000–$42,000 at peak earning years, in part because female-coded occupations are structurally undervalued. The justice system track is less salient for women — but economic precarity and housing instability create their own form of structural capture.`;
-    p = `The typical person who started where <strong>${nm}</strong> started navigated compounded barriers: economic instability at home, and the additional structural weight of being a woman in a labor market that still penalizes caregiving, undervalues female-coded work, and concentrates women in lower-wage sectors. The typical path here involves interrupted education — family responsibilities arrive before credentials are complete — and a career that doesn't reflect actual capacity.`;
+    eduTrack = `High school completion: approximately 80–85% — women from low-income households complete high school at slightly higher rates than men from the same backgrounds. Bachelor's degree attainment: roughly 25–35%, often interrupted by caregiving responsibilities. Women now outpace men in college enrollment nationally, but low-income women face specific barriers that compress this advantage.`;
+  } else if (isNonBinary && low) {
+    eduTrack = `High school completion: variable — non-binary and gender non-conforming youth face elevated dropout risk due to family rejection and school climate. College enrollment: lower than cisgender peers from equivalent starting conditions. The data on this population is limited, which is itself a structural problem.`;
+  } else if (affluent && highEdu) {
+    eduTrack = `High school completion: near universal. Bachelor's degree attainment: 70–80% for this starting profile — among the highest in the American distribution. Graduate degree attainment: 25–35%, significantly above the national average of roughly 13%.`;
+  } else if (affluent && lowEdu) {
+    eduTrack = `High school completion: near universal — affluent neighborhoods buffer the educational risk associated with non-college-educated parents. Bachelor's degree attainment: 50–65%, reflecting the school quality substitution effect: good schools and peer networks partially compensate for what non-college-educated parents can't directly provide.`;
   } else if (!low && !lowEdu) {
-    tracks = `<br><br><strong>The three typical tracks:</strong> High school completion: near universal. Bachelor's degree attainment: 60–70% for this starting profile. Income: median household income lands above $90,000. Justice system: minimal exposure — structural privilege operates as a buffer at every gate where low-income and minority users face friction.`;
-    p = `The typical person who started where <strong>${nm}</strong> started had soil that was more fertile than most. Educated adults in the household, a stable neighborhood, institutional knowledge already present. The system was designed to work for people who started here — and it largely did. The path to college, to professional life, to economic stability was visible and supported. The question the typical person from this starting point rarely has to ask is: what would I have become if the conditions had been different?`;
+    eduTrack = `High school completion: near universal. Bachelor's degree attainment: 60–70% for this starting profile. Graduate degree attainment: roughly 20–25% — well above the national average.`;
+  } else if (low && highEdu) {
+    eduTrack = `High school completion: high — college-educated parents provide meaningful protection against dropout risk even in low-income neighborhoods. Bachelor's degree attainment: roughly 40–50%, higher than most low-income profiles, though still below middle-class equivalents.`;
   } else {
-    tracks = `<br><br><strong>The three typical tracks:</strong> Educational attainment for this profile is variable — high school completion is likely, bachelor's degree attainment less certain. Income: landing between $45,000 and $75,000 is the modal outcome. Justice system exposure: lower than high-poverty profiles, but present as a risk factor depending on neighborhood and race.`;
-    p = `The typical person who started where <strong>${nm}</strong> started navigated a mixed landscape — some advantages, some real headwinds. The outcome distribution for this profile is wide. The decisive factors tend to be things outside individual control: which school, which neighborhood, which teacher happened to see something and act on it. The typical person here is capable. Whether that capability found soil depended enormously on contingencies they didn't choose.`;
+    eduTrack = `High school completion: likely, though not guaranteed. Bachelor's degree attainment: roughly 20–35% for this starting profile — variable depending on local school quality and access to navigation support.`;
   }
 
-  return p + tracks + delta;
+  // ── TRACK 2: INCOME ─────────────────────────────────────────────────────────
+  let incTrack = '';
+  if (isIndigenous) {
+    incTrack = `Median household income for Indigenous Americans is roughly $49,000 — among the lowest of any demographic group. Poverty rates remain approximately 25%, compared to 11% nationally.`;
+  } else if (isBlack && veryLow && lowEdu) {
+    incTrack = `Median earnings for Black Americans with a high school diploma: roughly $35,000–$42,000. The racial wealth gap means that even equivalent earnings translate to significantly less wealth accumulation — the median Black family holds roughly 12 cents for every dollar of white family wealth (Federal Reserve, 2020).`;
+  } else if (isBlack && affluent) {
+    incTrack = `Income: above-average earnings trajectory, though research documents a persistent racial earnings gap of approximately 20–25% between Black and white workers with equivalent education and experience. Wealth accumulation is further constrained by the racial wealth gap operating through inheritance and housing appreciation.`;
+  } else if ((isLatino || bothImm) && veryLow && lowEdu) {
+    incTrack = `Median household income for this profile: roughly $38,000–$52,000. Latino workers with immigrant parents and non-college-educated household heads face a compounded wage gap — language barriers, documentation status uncertainty, and occupational concentration in lower-wage sectors all compress earnings below what education alone would predict.`;
+  } else if (isWoman && low) {
+    incTrack = `Income for women from low-income backgrounds: roughly $28,000–$42,000 at peak earning years — constrained by occupational concentration in undervalued female-coded sectors, the motherhood penalty (documented at roughly 7–9% per child), and interrupted career trajectories due to caregiving.`;
+  } else if (affluent && highEdu) {
+    incTrack = `Median household income: well above $100,000. This starting profile is associated with the highest income mobility rates in the American distribution — Chetty's data show that children from this background reach the top income quintile at roughly 3–4× the national rate.`;
+  } else if (affluent && lowEdu) {
+    incTrack = `Median household income: $75,000–$120,000 — the affluent neighborhood effect substantially buffers the income penalty typically associated with non-college-educated parents, primarily through peer network access and school quality.`;
+  } else if (!low && !lowEdu) {
+    incTrack = `Median household income: above $80,000. The combination of stable neighborhood, college-educated parents, and institutional knowledge access produces a highly favorable income trajectory.`;
+  } else if (isAsian && veryLow) {
+    incTrack = `Income trajectory for Asian Americans from low-income immigrant households is highly variable by national origin subgroup — aggregate "model minority" statistics obscure wide disparities between, for example, Indian-American and Hmong-American households. Modal outcome: $40,000–$70,000, with high variance.`;
+  } else {
+    incTrack = `Median household income: roughly $45,000–$70,000 — the modal outcome for this starting profile. Income mobility above this range requires credential acquisition that this starting point makes statistically unlikely without a significant rupture event.`;
+  }
+
+  // ── TRACK 3: JUSTICE SYSTEM ─────────────────────────────────────────────────
+  let justTrack = '';
+  if (isIndigenous) {
+    justTrack = `Justice system: Indigenous Americans are incarcerated at 2.5× the rate of white Americans — a direct legacy of structural dispossession, under-resourced public defense, and over-policing of reservation communities. This is not a measure of behavior. It is a measure of system design.`;
+  } else if (isBlack && veryLow) {
+    justTrack = `Justice system: Black men are incarcerated at 5× the rate of white men — the single largest racial disparity in the American criminal justice system. From low-income starting points, the pipeline from school discipline to justice system contact is well-documented: Black students are suspended at 3× the rate of white students for equivalent behavior, creating a school-to-prison pathway that operates as a structural filter, not a behavioral one.`;
+  } else if (isBlack && affluent) {
+    justTrack = `Justice system: even from affluent starting points, Black Americans face elevated rates of police contact and criminal justice involvement relative to white Americans from equivalent backgrounds. Driving while Black, stop-and-frisk patterns, and sentencing disparities persist across income levels — structural racism in the justice system is not fully offset by class advantage.`;
+  } else if ((isLatino || bothImm) && veryLow) {
+    justTrack = `Justice system: Latino men are incarcerated at 1.3× the rate of white men. For immigrant-household children, the risk extends beyond incarceration to include immigration enforcement — a distinctive justice system pressure that affects educational stability and family structure independently of criminal behavior.`;
+  } else if (isMENA && low) {
+    justTrack = `Justice system: Middle Eastern and North African Americans face elevated surveillance and law enforcement contact post-9/11, particularly in Muslim communities. Federal surveillance programs and discriminatory policing create justice system exposure pathways that operate independently of behavior.`;
+  } else if (isWoman) {
+    justTrack = `Justice system: women face significantly lower incarceration rates than men across all demographic groups. However, economic precarity and housing instability create their own form of structural capture — cycles of poverty, informal economic activity, and relationship-based criminal exposure that disproportionately affect low-income women.`;
+  } else if (isNonBinary) {
+    justTrack = `Justice system: transgender and gender non-conforming Americans face extremely elevated incarceration rates — roughly 16% of transgender people report having been incarcerated, compared to 3% of the general population. Criminalization of gender non-conformity, homelessness, and survival sex work account for much of this disparity.`;
+  } else if (affluent && isWhite) {
+    justTrack = `Justice system: minimal exposure — structural privilege operates as a buffer at every gate where lower-income and minority users face friction. White Americans from affluent backgrounds are dramatically underrepresented in justice system contact relative to their population share, reflecting both behavioral differences enabled by resource access and differential enforcement patterns.`;
+  } else if (affluent) {
+    justTrack = `Justice system: below-average exposure — affluent neighborhood provides meaningful insulation from the school-to-justice pipeline. Some residual risk depending on race and gender, but significantly lower than low-income equivalents.`;
+  } else if (moved) {
+    justTrack = `Justice system: elevated among high-mobility youth — residential instability and school disengagement create pathways to justice system contact that are well-documented in the literature on chronic absenteeism and juvenile justice.`;
+  } else {
+    justTrack = `Justice system: moderate exposure risk — lower than high-poverty profiles but not negligible. Primary pathway is through school disengagement and neighborhood-level policing patterns rather than direct criminal activity.`;
+  }
+
+  // ── NARRATIVE PORTRAIT ──────────────────────────────────────────────────────
+  let portrait = '';
+  if (isIndigenous && veryLow) {
+    portrait = `The typical person who started where <strong>${nm}</strong> started faces the most severe structural suppression in the American data. Historical dispossession, chronic underfunding of tribal schools and services, geographic isolation, and compounding poverty produce a distribution where the modal outcome is truncated education and constrained economic mobility. This is not a story about individual capacity. It is a story about a system that has actively extracted from this community for generations.`;
+  } else if (isBlack && veryLow && lowEdu) {
+    portrait = `The typical person who started where <strong>${nm}</strong> started encounters the racial wealth gap at every gate — in school funding, in hiring, in lending, in criminal justice exposure. The data show that Black Americans with identical qualifications to white peers earn less, build wealth more slowly, and face steeper climbs at every institutional threshold. The typical person here is capable, hardworking, and systematically underestimated. The distance between their capacity and their outcomes is a measure of structural design, not individual failing.`;
+  } else if (isBlack && affluent) {
+    portrait = `The typical person who started where <strong>${nm}</strong> started had real structural advantages — stable neighborhood, institutional access, resource-rich schools. And yet the data consistently show that race operates as an independent variable even from affluent starting points: Black Americans with equivalent credentials earn less, accumulate wealth more slowly, and face persistent discrimination in hiring, lending, and institutional advancement. The system extends advantages selectively.`;
+  } else if ((isLatino || bothImm) && veryLow && lowEdu) {
+    portrait = `The typical person who started where <strong>${nm}</strong> started is hardworking, capable, and tired in a specific way. They probably finished high school — or came close — but college wasn't something anyone in their world had navigated, so the path there was invisible. They entered the workforce in their late teens or early twenties: service, construction, logistics, care work. They make somewhere between $38,000 and $52,000 a year. They live near where they grew up. They love their family. They've never had a framework that explained the gap between what they sensed they were capable of and what the structure made available to them.`;
+  } else if (moved && lowEdu) {
+    portrait = `The typical person who started where <strong>${nm}</strong> started never had the chance to put down roots — in a school, in a neighborhood, in a peer group that knew them. Each move reset the social capital that turns into academic scaffolding. The system sorts heavily by stability, and instability — regardless of cause — compounds into educational gaps, network gaps, and economic gaps that are difficult to close.`;
+  } else if (isWoman && veryLow) {
+    portrait = `The typical person who started where <strong>${nm}</strong> started navigated compounded barriers: economic instability at home, and the additional structural weight of being a woman in a labor market that still penalizes caregiving, undervalues female-coded work, and concentrates women in lower-wage sectors. The typical path here involves interrupted education — family responsibilities arrive before credentials are complete — and a career that doesn't reflect actual capacity.`;
+  } else if (affluent && highEdu) {
+    portrait = `The typical person who started where <strong>${nm}</strong> started had soil that was more fertile than most — and the system largely delivered on that promise. Educated parents, a stable and resourced neighborhood, institutional knowledge already present in the household. The path to college, to professional life, to economic stability was visible and supported. The question the typical person from this starting point rarely has to ask is: what would I have become if the conditions had been different?`;
+  } else if (affluent && lowEdu) {
+    portrait = `The typical person who started where <strong>${nm}</strong> started had a mixed inheritance: an affluent neighborhood that provided strong schools and peer networks, but parents who hadn't navigated higher education themselves. The research shows that neighborhood quality partially substitutes for parental educational capital — school quality and peer effects fill some of the gap. The typical outcome here is better than non-college-educated parental education alone would predict, but the absence of a household map to institutional navigation still leaves real gaps.`;
+  } else if (!low && !lowEdu) {
+    portrait = `The typical person who started where <strong>${nm}</strong> started had conditions that the system was designed to reward. Stable neighborhood, educated parents, institutional familiarity already present. The typical path here runs through college and into professional life with more friction than the most advantaged profiles but significantly less than most Americans face.`;
+  } else if (low && highEdu) {
+    portrait = `The typical person who started where <strong>${nm}</strong> started had one significant structural advantage — college-educated parents — operating against a significant headwind: a low-income neighborhood. The research shows these forces partially offset each other. College-educated parents provide academic scaffolding and aspirational framing; the neighborhood limits the peer community and institutional access. The typical outcome is better than neighborhood alone predicts, but worse than parental education alone would suggest.`;
+  } else {
+    portrait = `The typical person who started where <strong>${nm}</strong> started navigated a mixed landscape — some advantages, some real headwinds. The outcome distribution for this profile is wide. The decisive factors tend to be things outside individual control: which school, which neighborhood, which teacher happened to see something and act on it. The typical person here is capable. Whether that capability found soil depended enormously on contingencies they didn't choose.`;
+  }
+
+  const tracks = `<br><br><strong>The three typical tracks:</strong> <em>Education:</em> ${eduTrack} <em>Income:</em> ${incTrack} <em>Justice system:</em> ${justTrack}`;
+
+  return portrait + tracks + delta;
 }
 
 function seed() {
@@ -1711,7 +1918,7 @@ function calc() {
   const chain = document.getElementById('calcRows');
 
   chain.innerHTML = rows.map(r =>
-    `<div class="calc-row"><div class="calc-label">${r.l}</div><div class="calc-val">${r.p}</div></div>`
+    `<div class="calc-row${r.interaction ? ' interaction' : ''}"><div class="calc-label">${r.l}</div><div class="calc-val">${r.p}</div></div>`
   ).join('');
 
   const items = chain.querySelectorAll('.calc-row');
@@ -1842,9 +2049,9 @@ function showResult(rows, structural, cohortSize, percentile) {
     <div class="r-odds-secondary">Birth cohort: ${cohortFmt} people born in the same era</div>
   `;
 
-  // Chain — skip cohort row (context:true), show it dimmed
+  // Chain — context row dimmed, interaction rows italicised
   document.getElementById('rChain').innerHTML = rows.map(r =>
-    `<div class="chain-row" ${r.context ? 'style="opacity:0.45"' : ''}>
+    `<div class="chain-row${r.context ? '' : r.interaction ? ' interaction' : ''}" ${r.context ? 'style="opacity:0.45"' : ''}>
       <div class="chain-filter">${r.l}</div>
       <div class="chain-mult">${r.p}</div>
     </div>`
