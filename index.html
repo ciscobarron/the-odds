@@ -6,6 +6,16 @@
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#0f0b06">
 <title>The Odds — What Were Yours?</title>
+<meta name="description" content="Ten questions. One number that reframes everything. See the structural odds of your own life outcomes.">
+<link rel="canonical" href="https://www.whatwereyourodds.com/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="The Odds">
+<meta property="og:title" content="The Odds — What Were Yours?">
+<meta property="og:description" content="Ten questions. One number that reframes everything. Nobody ever shows you the odds.">
+<meta property="og:url" content="https://www.whatwereyourodds.com/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="The Odds — What Were Yours?">
+<meta name="twitter:description" content="Ten questions. One number that reframes everything. Nobody ever shows you the odds.">
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-DQ49EW7QLX"></script>
 <script>
@@ -1249,6 +1259,7 @@
     <div class="sc-odds" id="scOdds"></div>
     <div class="sc-name" id="scName"></div>
     <div class="sc-quote">"Potential is everywhere. Conditions are not."</div>
+    <div class="sc-url">whatwereyourodds.com</div>
     <div class="sc-actions">
       <button class="btn-copy" id="copyBtn" onclick="doCopy()">Copy to Share</button>
       <button class="btn-close" onclick="closeShare()">Close</button>
@@ -2089,7 +2100,7 @@ function doCopy() {
   const {structural, percentile} = calcOdds();
   const nm = ans.name || 'I';
   const oddsStr = fmt(structural);
-  const txt = `${nm} just mapped my structural odds.\n\nStructural odds: ${oddsStr}\nDifficulty percentile: ${percentile}${ordinal(percentile)}\n\n"Potential is everywhere. Conditions are not."`;
+  const txt = `${nm} just mapped my structural odds.\n\nStructural odds: ${oddsStr}\nDifficulty percentile: ${percentile}${ordinal(percentile)}\n\n"Potential is everywhere. Conditions are not."\n\nWhat were yours? https://www.whatwereyourodds.com`;
   navigator.clipboard.writeText(txt).then(() => {
     const btn = document.getElementById('copyBtn');
     btn.textContent = 'Copied ✓';
