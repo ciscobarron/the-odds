@@ -2098,9 +2098,8 @@ function closeShare() { document.getElementById('shareOverlay').classList.remove
 
 function doCopy() {
   const {structural, percentile} = calcOdds();
-  const nm = ans.name || 'I';
   const oddsStr = fmt(structural);
-  const txt = `${nm} just mapped my structural odds.\n\nStructural odds: ${oddsStr}\nDifficulty percentile: ${percentile}${ordinal(percentile)}\n\n"Potential is everywhere. Conditions are not."\n\nWhat were yours? https://www.whatwereyourodds.com`;
+  const txt = `I just mapped my structural odds.\n\nStructural odds: ${oddsStr}\nDifficulty percentile: ${percentile}${ordinal(percentile)}\n\n"Potential is everywhere. Conditions are not."\n\nWhat were yours? https://www.whatwereyourodds.com`;
   navigator.clipboard.writeText(txt).then(() => {
     const btn = document.getElementById('copyBtn');
     btn.textContent = 'Copied ✓';
