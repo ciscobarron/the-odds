@@ -1780,12 +1780,22 @@ function typical() {
   const veryLow = ['We moved a lot — no single place was home','Low-income — most families were struggling'].includes(a.neighborhood);
   const low = veryLow || a.neighborhood === 'Working class — people got by, not much extra';
   const affluent = ['Middle class — most families were comfortable','Affluent — most families had significant resources'].includes(a.neighborhood);
+  // `affluent` above covers middle-class AND affluent; use these when the claim only fits the top tier.
+  const trulyAffluent = a.neighborhood === 'Affluent — most families had significant resources';
+  const middle = a.neighborhood === 'Middle class — most families were comfortable';
+  const nbWord = trulyAffluent ? 'affluent' : 'middle-class';
+  const nbArticle = trulyAffluent ? 'an affluent' : 'a middle-class';
   const veryLowEdu = a.parentEdu === 'Less than high school';
   const lowEdu = ['Less than high school','High school diploma or GED'].includes(a.parentEdu);
   const highEdu = ["Bachelor's degree",'Graduate or professional degree'].includes(a.parentEdu);
+  const someCollegeEdu = a.parentEdu === 'Some college or trade / vocational';
   const unstable = ['Significant instability — real hardship at times','Uncertain — things were tight and unpredictable'].includes(a.stability);
+  const stableHH = ['Generally stable',"Very stable — money wasn't a source of stress"].includes(a.stability);
   const highSchooling = ['One graduate degree','Multiple graduate degrees',"Bachelor's degree"].includes(a.schooling);
   const noMap = a.map === 'No — I was mostly figuring it out without a map';
+  const someMap = a.map === 'Somewhat — I had some guidance but big gaps';
+  const mentorMap = a.map === 'Yes — one or two people who really knew the path';
+  const strongMap = a.map === 'Yes — my household was deeply familiar with it';
 
   // Income delta
   const incomeLanded = a.currentIncome || '';
@@ -1817,7 +1827,7 @@ function typical() {
   } else if (isBlack && veryLow && highEdu) {
     eduTrack = `High school completion: high — college-educated parents provide academic scaffolding even in low-income neighborhoods. Bachelor's degree attainment: roughly 40–50%, higher than most low-income profiles but still below the rate for white students from equivalent parental education backgrounds, reflecting documented diminishing returns on parental education for Black Americans.`;
   } else if (isBlack && affluent) {
-    eduTrack = `High school completion: near universal. Bachelor's degree attainment: 55–65% — higher than most profiles, but research documents that Black Americans in affluent neighborhoods still face discrimination in selective college admissions and hiring that partially offsets neighborhood advantages.`;
+    eduTrack = `High school completion: near universal. Bachelor's degree attainment: 55–65% — higher than most profiles, but research documents that Black Americans in ${nbWord} neighborhoods still face discrimination in selective college admissions and hiring that partially offsets neighborhood advantages.`;
   } else if (isLatino && veryLow && veryLowEdu) {
     eduTrack = `High school completion for ${imm ? 'Latino and immigrant-household students' : 'Latino students'} from low-income backgrounds with parents who didn't finish high school: approximately 65–72%. Of those, roughly 18–22% go on to earn a bachelor's degree — constrained heavily by ${imm ? 'language barriers, financial pressure, and lack of college navigation support' : 'financial pressure and lack of college navigation support'}.`;
   } else if (isLatino && veryLow && lowEdu) {
@@ -1830,12 +1840,14 @@ function typical() {
     eduTrack = `High school completion: approximately 80–85% — women from low-income households complete high school at slightly higher rates than men from the same backgrounds. Bachelor's degree attainment: roughly 25–35%, often interrupted by caregiving responsibilities. Women now outpace men in college enrollment nationally, but low-income women face specific barriers that compress this advantage.`;
   } else if (isNonBinary && low) {
     eduTrack = `High school completion: variable — non-binary and gender non-conforming youth face elevated dropout risk due to family rejection and school climate. College enrollment: lower than cisgender peers from equivalent starting conditions. The data on this population is limited, which is itself a structural problem.`;
-  } else if (affluent && highEdu) {
-    eduTrack = `High school completion: near universal. Bachelor's degree attainment: 70–80% for this starting profile — among the highest in the American distribution. Graduate degree attainment: 25–35%, significantly above the national average of roughly 13%.`;
+  } else if (trulyAffluent && highEdu) {
+    eduTrack =`High school completion: near universal. Bachelor's degree attainment: 70–80% for this starting profile — among the highest in the American distribution. Graduate degree attainment: 25–35%, significantly above the national average of roughly 13%.`;
   } else if (affluent && lowEdu) {
-    eduTrack = `High school completion: near universal — affluent neighborhoods buffer the educational risk associated with non-college-educated parents. Bachelor's degree attainment: 50–65%, reflecting the school quality substitution effect: good schools and peer networks partially compensate for what non-college-educated parents can't directly provide.`;
-  } else if (!low && !lowEdu) {
+    eduTrack = `High school completion: near universal — ${nbWord} neighborhoods buffer the educational risk associated with non-college-educated parents. Bachelor's degree attainment: 50–65%, reflecting the school quality substitution effect: good schools and peer networks partially compensate for what non-college-educated parents can't directly provide.`;
+  } else if (!low && highEdu) {
     eduTrack = `High school completion: near universal. Bachelor's degree attainment: 60–70% for this starting profile. Graduate degree attainment: roughly 20–25% — well above the national average.`;
+  } else if (!low && someCollegeEdu) {
+    eduTrack = `High school completion: high. Bachelor's degree attainment: above the rate for children of parents with no college, but well below the rate for children of college-educated parents — school quality and local access to navigation support decide much of the difference.`;
   } else if (low && highEdu) {
     eduTrack = `High school completion: high — college-educated parents provide meaningful protection against dropout risk even in low-income neighborhoods. Bachelor's degree attainment: roughly 40–50%, higher than most low-income profiles, though still below middle-class equivalents.`;
   } else {
@@ -1858,12 +1870,14 @@ function typical() {
     incTrack = `Income outcomes for children of immigrants from low-income households vary widely by parents' country of origin and by whether credentials earned abroad transferred, so there is no single modal outcome. Language barriers, concentration in lower-wage sectors, and thin professional networks compress earnings for many; strong educational aspirations and family support push the other way.`;
   } else if (isWoman && low) {
     incTrack = `Income for women from low-income backgrounds: roughly $28,000–$42,000 at peak earning years — constrained by occupational concentration in undervalued female-coded sectors, the motherhood penalty (documented at roughly 7–9% per child), and interrupted career trajectories due to caregiving.`;
-  } else if (affluent && highEdu) {
-    incTrack = `Median household income: well above $100,000. This starting profile is associated with the highest income mobility rates in the American distribution — Chetty's data show that children from this background reach the top income quintile at roughly 3–4× the national rate.`;
+  } else if (trulyAffluent && highEdu) {
+    incTrack =`Median household income: well above $100,000. This starting profile is associated with the highest income mobility rates in the American distribution — Chetty's data show that children from this background reach the top income quintile at roughly 3–4× the national rate.`;
   } else if (affluent && lowEdu) {
-    incTrack = `Median household income: $75,000–$120,000 — the affluent neighborhood effect substantially buffers the income penalty typically associated with non-college-educated parents, primarily through peer network access and school quality.`;
-  } else if (!low && !lowEdu) {
-    incTrack = `Median household income: above $80,000. The combination of stable neighborhood, college-educated parents, and institutional knowledge access produces a highly favorable income trajectory.`;
+    incTrack = `Median household income: $75,000–$120,000 — the ${nbWord} neighborhood effect substantially buffers the income penalty typically associated with non-college-educated parents, primarily through peer network access and school quality.`;
+  } else if (!low && highEdu) {
+    incTrack = `Median household income: above $80,000. College-educated parents and a neighborhood that isn't struggling produce a favorable income trajectory — most of all where the household also knew how to navigate institutions.`;
+  } else if (!low && someCollegeEdu) {
+    incTrack = `Median household income: around or modestly above the national median. Parents with some college and a neighborhood that isn't struggling give a solid base; whether income climbs from there depends largely on whether a credential gets completed and who helps navigate it.`;
   } else if (isAsian && veryLow) {
     incTrack = `Income trajectory for Asian Americans from low-income immigrant households is highly variable by national origin subgroup — aggregate "model minority" statistics obscure wide disparities between, for example, Indian-American and Hmong-American households. Modal outcome: $40,000–$70,000, with high variance.`;
   } else {
@@ -1877,7 +1891,7 @@ function typical() {
   } else if (isBlack && veryLow) {
     justTrack = `Justice system: Black men are incarcerated at 5× the rate of white men — the single largest racial disparity in the American criminal justice system. From low-income starting points, the pipeline from school discipline to justice system contact is well-documented: Black students are suspended at 3× the rate of white students for equivalent behavior, creating a school-to-prison pathway that operates as a structural filter, not a behavioral one.`;
   } else if (isBlack && affluent) {
-    justTrack = `Justice system: even from affluent starting points, Black Americans face elevated rates of police contact and criminal justice involvement relative to white Americans from equivalent backgrounds. Driving while Black, stop-and-frisk patterns, and sentencing disparities persist across income levels — structural racism in the justice system is not fully offset by class advantage.`;
+    justTrack = `Justice system: even from ${nbWord} starting points, Black Americans face elevated rates of police contact and criminal justice involvement relative to white Americans from equivalent backgrounds. Driving while Black, stop-and-frisk patterns, and sentencing disparities persist across income levels — structural racism in the justice system is not fully offset by class advantage.`;
   } else if (isLatino && veryLow) {
     justTrack = `Justice system: Latino men are incarcerated at 1.3× the rate of white men.${imm ? ' For immigrant-household children, the risk extends beyond incarceration to include immigration enforcement — a distinctive justice system pressure that affects educational stability and family structure independently of criminal behavior.' : ''}`;
   } else if (isMENA && low) {
@@ -1889,9 +1903,9 @@ function typical() {
   } else if (isNonBinary) {
     justTrack = `Justice system: transgender and gender non-conforming Americans face extremely elevated incarceration rates — roughly 16% of transgender people report having been incarcerated, compared to 3% of the general population. Criminalization of gender non-conformity, homelessness, and survival sex work account for much of this disparity.`;
   } else if (affluent && isWhite) {
-    justTrack = `Justice system: minimal exposure — structural privilege operates as a buffer at every gate where lower-income and minority users face friction. White Americans from affluent backgrounds are dramatically underrepresented in justice system contact relative to their population share, reflecting both behavioral differences enabled by resource access and differential enforcement patterns.`;
+    justTrack = `Justice system: minimal exposure — structural privilege operates as a buffer at every gate where lower-income and minority users face friction. White Americans from ${nbWord} backgrounds are dramatically underrepresented in justice system contact relative to their population share, reflecting both behavioral differences enabled by resource access and differential enforcement patterns.`;
   } else if (affluent) {
-    justTrack = `Justice system: below-average exposure — affluent neighborhood provides meaningful insulation from the school-to-justice pipeline. Some residual risk depending on race and gender, but significantly lower than low-income equivalents.`;
+    justTrack = `Justice system: below-average exposure — ${nbArticle} neighborhood provides meaningful insulation from the school-to-justice pipeline. Some residual risk depending on race and gender, but significantly lower than low-income equivalents.`;
   } else if (moved) {
     justTrack = `Justice system: elevated among high-mobility youth — residential instability and school disengagement create pathways to justice system contact that are well-documented in the literature on chronic absenteeism and juvenile justice.`;
   } else {
@@ -1914,21 +1928,47 @@ function typical() {
     portrait = `The typical person who started where <strong>${nm}</strong> started never had the chance to put down roots — in a school, in a neighborhood, in a peer group that knew them. Each move reset the social capital that turns into academic scaffolding. The system sorts heavily by stability, and instability — regardless of cause — compounds into educational gaps, network gaps, and economic gaps that are difficult to close.`;
   } else if (isWoman && veryLow) {
     portrait = `The typical person who started where <strong>${nm}</strong> started navigated compounded barriers: economic instability at home, and the additional structural weight of being a woman in a labor market that still penalizes caregiving, undervalues female-coded work, and concentrates women in lower-wage sectors. The typical path here involves interrupted education — family responsibilities arrive before credentials are complete — and a career that doesn't reflect actual capacity.`;
-  } else if (affluent && highEdu) {
-    portrait = `The typical person who started where <strong>${nm}</strong> started had soil that was more fertile than most — and the system largely delivered on that promise. Educated parents, a stable and resourced neighborhood, institutional knowledge already present in the household. The path to college, to professional life, to economic stability was visible and supported. The question the typical person from this starting point rarely has to ask is: what would I have become if the conditions had been different?`;
+  } else if (trulyAffluent && highEdu) {
+    portrait =`The typical person who started where <strong>${nm}</strong> started had soil that was more fertile than most — and the system largely delivered on that promise. Educated parents, a stable and resourced neighborhood, institutional knowledge already present in the household. The path to college, to professional life, to economic stability was visible and supported. The question the typical person from this starting point rarely has to ask is: what would I have become if the conditions had been different?`;
   } else if (affluent && lowEdu) {
-    portrait = `The typical person who started where <strong>${nm}</strong> started had a mixed inheritance: an affluent neighborhood that provided strong schools and peer networks, but parents who hadn't navigated higher education themselves. The research shows that neighborhood quality partially substitutes for parental educational capital — school quality and peer effects fill some of the gap. The typical outcome here is better than non-college-educated parental education alone would predict, but the absence of a household map to institutional navigation still leaves real gaps.`;
-  } else if (!low && !lowEdu) {
-    portrait = `The typical person who started where <strong>${nm}</strong> started had conditions that the system was designed to reward. Stable neighborhood, educated parents, institutional familiarity already present. The typical path here runs through college and into professional life with more friction than the most advantaged profiles but significantly less than most Americans face.`;
+    portrait = `The typical person who started where <strong>${nm}</strong> started had a mixed inheritance: ${nbArticle} neighborhood that provided strong schools and peer networks, but parents who hadn't navigated higher education themselves. The research shows that neighborhood quality partially substitutes for parental educational capital — school quality and peer effects fill some of the gap. The typical outcome here is better than non-college-educated parental education alone would predict, but the absence of a household map to institutional navigation still leaves real gaps.`;
+  } else if (!low && highEdu) {
+    portrait = `The typical person who started where <strong>${nm}</strong> started had conditions that the system was designed to reward: college-educated parents, ${middle ? 'a comfortable neighborhood' : 'a neighborhood with both resources and strain'}, and — for most people starting here — institutional familiarity already present at home. The typical path here runs through college and into professional life with more friction than the most advantaged profiles but significantly less than most Americans face.`;
+  } else if (!low && someCollegeEdu) {
+    portrait = `The typical person who started where <strong>${nm}</strong> started had a solid but unfinished inheritance: a neighborhood that wasn't struggling, and parents who had started down the college path themselves, though not all the way. The path ahead was partly visible — enough to see the first steps, not always enough to see the whole route. Outcomes from here turn on small things: which school, which counselor, which program turned that partial map into a complete one.`;
   } else if (low && highEdu) {
     portrait = `The typical person who started where <strong>${nm}</strong> started had one significant structural advantage — college-educated parents — operating against a significant headwind: a low-income neighborhood. The research shows these forces partially offset each other. College-educated parents provide academic scaffolding and aspirational framing; the neighborhood limits the peer community and institutional access. The typical outcome is better than neighborhood alone predicts, but worse than parental education alone would suggest.`;
   } else {
     portrait = `The typical person who started where <strong>${nm}</strong> started navigated a mixed landscape — some advantages, some real headwinds. The outcome distribution for this profile is wide. The decisive factors tend to be things outside individual control: which school, which neighborhood, which teacher happened to see something and act on it. The typical person here is capable. Whether that capability found soil depended enormously on contingencies they didn't choose.`;
   }
 
+  // ── WHERE THE PERSON'S OWN ANSWERS DIFFER FROM THE TYPICAL PATTERN ──────────
+  // The portrait and tracks describe the typical person from this starting profile
+  // (neighborhood, parents' education, race, gender). The map and stability answers
+  // can contradict that pattern, so say so rather than leave the contradiction.
+  const notes = [];
+  if (highEdu && (noMap || someMap)) {
+    notes.push(`You said ${noMap ? 'no one in your world knew the path — you were mostly figuring it out without a map' : 'you had some guidance, but with big gaps'}. College-educated parents usually supply that map; without it, a real headwind applies that the typical profile here doesn't carry.`);
+  }
+  if (lowEdu && strongMap) {
+    notes.push(`You said your household was deeply familiar with the path. That is unusual from a starting point like yours, and it's a real advantage — often the difference between a path that is visible and one that isn't.`);
+  }
+  if (lowEdu && mentorMap) {
+    notes.push(`You said one or two people really knew the path for you. Research on information and mentoring interventions suggests that kind of help can change outcomes from starting points like yours.`);
+  }
+  if (!low && unstable) {
+    notes.push(`You described financial instability or unpredictability at home, which your neighborhood and your parents' education wouldn't predict. Income volatility has its own measurable effect on children's outcomes, separate from average income.`);
+  }
+  if (low && stableHH) {
+    notes.push(`You described a financially stable household despite a low-income neighborhood. That stability is protective, and the typical profile here doesn't have it.`);
+  }
+  const differ = notes.length
+    ? `<br><br><strong>Where your answers differ from the typical pattern:</strong> ${notes.join(' ')}`
+    : '';
+
   const tracks = `<br><br><strong>The three typical tracks:</strong> <em>Education:</em> ${eduTrack} <em>Income:</em> ${incTrack} <em>Justice system:</em> ${justTrack}`;
 
-  return portrait + tracks + delta;
+  return portrait + differ + tracks + delta;
 }
 
 function seed() {
@@ -1938,7 +1978,9 @@ function seed() {
   const priv = ['Middle class — most families were comfortable','Affluent — most families had significant resources'].includes(a.neighborhood);
 
   if (high && low) return `The potential was always there. The conditions weren't equally shared.`;
-  if (priv && !low) return `Your chain includes real advantages — conditions that made the path visible and supported. That's worth seeing clearly, not to diminish what you've built, but to understand what you were given to build with. Potential is everywhere. Conditions are not.`;
+  const noMapAns = a.map === 'No — I was mostly figuring it out without a map';
+  const unstableAns = ['Significant instability — real hardship at times','Uncertain — things were tight and unpredictable'].includes(a.stability);
+  if (priv && !low && !noMapAns && !unstableAns) return `Your chain includes real advantages — conditions that made the path visible and supported. That's worth seeing clearly, not to diminish what you've built, but to understand what you were given to build with. Potential is everywhere. Conditions are not.`;
   return `The potential was always there. Whether it found the right conditions — that was never equally shared.`;
 }
 
