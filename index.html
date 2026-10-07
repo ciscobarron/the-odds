@@ -1798,23 +1798,37 @@ function typical() {
   const strongMap = a.map === 'Yes — my household was deeply familiar with it';
 
   // Income delta
+  // Compares the neighborhood the person grew up in with the household income they report today.
+  // Income tiers: 0 = under $30K, 1 = $30-60K, 2 = $60-100K, 3 = $100-200K, 4 = over $200K.
+  // lo/hi = the range of household-income tiers typical for each starting neighborhood.
+  // "We moved a lot" says nothing about income, so it gets no delta sentence.
   const incomeLanded = a.currentIncome || '';
-  const landedHigh = ['$100,000 – $200,000','Over $200,000'].includes(incomeLanded);
-  const landedMid = ['$60,000 – $100,000'].includes(incomeLanded);
-  const landedLow = ['Under $30,000','$30,000 – $60,000'].includes(incomeLanded);
+  const incomeLabel = incomeLanded.replace(/^(Over|Under)/, m => m.toLowerCase());
+  const landedTier = ['Under $30,000','$30,000 – $60,000','$60,000 – $100,000','$100,000 – $200,000','Over $200,000'].indexOf(incomeLanded);
+  const startInfo = {
+    'Low-income — most families were struggling':        {t:0, label:'a low-income neighborhood',     lo:0, hi:1},
+    'Working class — people got by, not much extra':     {t:1, label:'a working-class neighborhood',  lo:1, hi:2},
+    'Mixed — some doing okay, some not':                 {t:2, label:'a mixed-income neighborhood',   lo:1, hi:2},
+    'Middle class — most families were comfortable':     {t:3, label:'a middle-class neighborhood',   lo:2, hi:3},
+    'Affluent — most families had significant resources':{t:4, label:'an affluent neighborhood',      lo:3, hi:4}
+  }[a.neighborhood];
 
   let delta = '';
-  if (incomeLanded && incomeLanded !== 'Prefer not to say') {
-    if (low && landedHigh) {
-      delta = ` <strong>The income delta is stark:</strong> you started in a household likely earning under $35,000 — and landed at ${incomeLanded}. That crossing represents one of the rarest mobility events in the American data.`;
-    } else if (low && landedMid) {
-      delta = ` <strong>On income:</strong> you moved from a low-income starting point to ${incomeLanded} — a real crossing of the structural threshold that most people who start where you started don't make.`;
-    } else if (low && landedLow) {
-      delta = ` <strong>On income:</strong> at ${incomeLanded}, your household income today is close to where you started — which is exactly what the data predict. The structure that produced your starting conditions tends to reproduce itself.`;
-    } else if (affluent && landedHigh) {
-      delta = ` <strong>On income:</strong> at ${incomeLanded}, you landed where the system predicted for someone with your starting conditions — which is itself worth seeing clearly.`;
-    } else if (affluent && landedLow) {
-      delta = ` <strong>On income:</strong> at ${incomeLanded}, you landed below what the system would typically predict for someone who started where you started. That gap has its own story.`;
+  if (startInfo && landedTier >= 0) {
+    const up = landedTier - startInfo.hi;
+    const down = startInfo.lo - landedTier;
+    if (up >= 2 && startInfo.t === 0 && landedTier === 4) {
+      delta = ` <strong>The income delta is stark:</strong> you grew up in ${startInfo.label} and now report a household income of ${incomeLabel}. That is among the rarest crossings in the American mobility data.`;
+    } else if (up >= 2) {
+      delta = ` <strong>The income delta is stark:</strong> you grew up in ${startInfo.label} and now report a household income of ${incomeLabel} — far above where most people who start there land.`;
+    } else if (up === 1) {
+      delta = ` <strong>On income:</strong> you grew up in ${startInfo.label} and now report a household income of ${incomeLabel} — a real step up from where most people who start there land.`;
+    } else if (down > 0) {
+      delta = ` <strong>On income:</strong> at ${incomeLabel}, you landed below what the data typically predict for someone who grew up in ${startInfo.label}. That gap has its own story.`;
+    } else if (startInfo.t <= 2) {
+      delta = ` <strong>On income:</strong> at ${incomeLabel}, your household income today is close to where you started — which is what the data predict. The structure that produced your starting conditions tends to reproduce itself.`;
+    } else {
+      delta = ` <strong>On income:</strong> at ${incomeLabel}, you landed where the system predicted for someone with your starting conditions — which is itself worth seeing clearly.`;
     }
   }
 
@@ -1836,6 +1850,8 @@ function typical() {
     eduTrack = `Outcomes for children of immigrants from low-income households whose parents didn't finish college vary widely by parents' country of origin and their education before migrating, so no single completion rate describes this group well. Common headwinds are language barriers, financial pressure, and no one at home who has navigated U.S. college admissions; the immigrant optimism literature also documents unusually high educational aspirations that often partly offset them.`;
   } else if (moved && lowEdu) {
     eduTrack = `High school completion rates for students who moved 3+ times in childhood run 10–15 points below the national average — each move corresponds to roughly a 4–6 month academic setback. Bachelor's degree attainment from this starting point: under 20%.`;
+  } else if (isAsian && veryLow) {
+    eduTrack = `Asian-American attainment looks uniformly high in the aggregate, but that hides wide differences between households: outcomes differ sharply by national origin and by whether a family arrived through skilled-worker routes or as refugees. From a low-income household, college completion is far less assured than the aggregate suggests, and the "model minority" label can make that gap invisible to the schools and programs that might help.${isWoman ? ' Women face an additional compression: caregiving responsibilities often interrupt credentials.' : ''}`;
   } else if (isWoman && veryLow) {
     eduTrack = `High school completion: approximately 80–85% — women from low-income households complete high school at slightly higher rates than men from the same backgrounds. Bachelor's degree attainment: roughly 25–35%, often interrupted by caregiving responsibilities. Women now outpace men in college enrollment nationally, but low-income women face specific barriers that compress this advantage.`;
   } else if (isNonBinary && low) {
@@ -1857,7 +1873,9 @@ function typical() {
   // ── TRACK 2: INCOME ─────────────────────────────────────────────────────────
   let incTrack = '';
   if (isIndigenous) {
-    incTrack = `Median household income for Indigenous Americans is roughly $49,000 — among the lowest of any demographic group. Poverty rates remain approximately 25%, compared to 11% nationally.`;
+    incTrack = affluent
+      ? `Median household income for Indigenous Americans overall is roughly $49,000, but ${nbArticle} neighborhood${highEdu ? ' and college-educated parents' : ''} put this starting profile well above that group median. The group-level gap still tends to show up at comparable education and experience, and wealth builds more slowly — a structural layer that income figures alone don't capture.`
+      : `Median household income for Indigenous Americans is roughly $49,000 — among the lowest of any demographic group. Poverty rates remain approximately 25%, compared to 11% nationally.`;
   } else if (isBlack && veryLow && lowEdu) {
     incTrack = `Median earnings for Black Americans with a high school diploma: roughly $35,000–$42,000. The racial wealth gap means that even equivalent earnings translate to significantly less wealth accumulation — the median Black family holds roughly 12 cents for every dollar of white family wealth (Federal Reserve, 2020).`;
   } else if (isBlack && affluent) {
@@ -1868,6 +1886,10 @@ function typical() {
       : `Median household income for this profile: roughly $38,000–$52,000. Latino workers from non-college-educated households face a compounded wage gap — thinner professional networks, the hiring discrimination documented in audit studies, and occupational concentration in lower-wage sectors all compress earnings below what education alone would predict.`;
   } else if (bothImm && !isAsian && veryLow && lowEdu) {
     incTrack = `Income outcomes for children of immigrants from low-income households vary widely by parents' country of origin and by whether credentials earned abroad transferred, so there is no single modal outcome. Language barriers, concentration in lower-wage sectors, and thin professional networks compress earnings for many; strong educational aspirations and family support push the other way.`;
+  } else if (isAsian && veryLow) {
+    incTrack = `Income trajectory for Asian Americans from low-income households is highly variable by national origin subgroup — aggregate "model minority" statistics obscure wide disparities between, for example, Indian-American and Hmong-American households. Modal outcome: $40,000–$70,000, with high variance.${isWoman ? ' Women face an additional gap from the motherhood penalty and from concentration in lower-paid, female-coded sectors.' : ''}`;
+  } else if (isMENA && low) {
+    incTrack = `Income outcomes for Middle Eastern and North African Americans are hard to measure: federal data have historically counted them as white, which hides disadvantage within the group. Outcomes vary widely by national origin, immigration route, and religion.${isWoman ? ' Women face an additional gap from the motherhood penalty and from concentration in lower-paid, female-coded sectors.' : ''}`;
   } else if (isWoman && low) {
     incTrack = `Income for women from low-income backgrounds: roughly $28,000–$42,000 at peak earning years — constrained by occupational concentration in undervalued female-coded sectors, the motherhood penalty (documented at roughly 7–9% per child), and interrupted career trajectories due to caregiving.`;
   } else if (trulyAffluent && highEdu) {
@@ -1878,8 +1900,6 @@ function typical() {
     incTrack = `Median household income: above $80,000. College-educated parents and a neighborhood that isn't struggling produce a favorable income trajectory — most of all where the household also knew how to navigate institutions.`;
   } else if (!low && someCollegeEdu) {
     incTrack = `Median household income: around or modestly above the national median. Parents with some college and a neighborhood that isn't struggling give a solid base; whether income climbs from there depends largely on whether a credential gets completed and who helps navigate it.`;
-  } else if (isAsian && veryLow) {
-    incTrack = `Income trajectory for Asian Americans from low-income immigrant households is highly variable by national origin subgroup — aggregate "model minority" statistics obscure wide disparities between, for example, Indian-American and Hmong-American households. Modal outcome: $40,000–$70,000, with high variance.`;
   } else {
     incTrack = `Median household income: roughly $45,000–$70,000 — the modal outcome for this starting profile. Income mobility above this range requires credential acquisition that this starting point makes statistically unlikely without a significant rupture event.`;
   }
@@ -1887,21 +1907,23 @@ function typical() {
   // ── TRACK 3: JUSTICE SYSTEM ─────────────────────────────────────────────────
   let justTrack = '';
   if (isIndigenous) {
-    justTrack = `Justice system: Indigenous Americans are incarcerated at 2.5× the rate of white Americans — a direct legacy of structural dispossession, under-resourced public defense, and over-policing of reservation communities. This is not a measure of behavior. It is a measure of system design.`;
+    justTrack = affluent
+      ? `Justice system: Indigenous Americans are incarcerated at 2.5× the rate of white Americans. From ${nbArticle} starting point, exposure is lower than from a low-income one, but some residual risk remains. The disparity is not a measure of behavior. It is a measure of system design.`
+      : `Justice system: Indigenous Americans are incarcerated at 2.5× the rate of white Americans — a direct legacy of structural dispossession, under-resourced public defense, and over-policing of reservation communities. This is not a measure of behavior. It is a measure of system design.`;
   } else if (isBlack && veryLow) {
     justTrack = `Justice system: Black men are incarcerated at 5× the rate of white men — the single largest racial disparity in the American criminal justice system. From low-income starting points, the pipeline from school discipline to justice system contact is well-documented: Black students are suspended at 3× the rate of white students for equivalent behavior, creating a school-to-prison pathway that operates as a structural filter, not a behavioral one.`;
   } else if (isBlack && affluent) {
     justTrack = `Justice system: even from ${nbWord} starting points, Black Americans face elevated rates of police contact and criminal justice involvement relative to white Americans from equivalent backgrounds. Driving while Black, stop-and-frisk patterns, and sentencing disparities persist across income levels — structural racism in the justice system is not fully offset by class advantage.`;
   } else if (isLatino && veryLow) {
     justTrack = `Justice system: Latino men are incarcerated at 1.3× the rate of white men.${imm ? ' For immigrant-household children, the risk extends beyond incarceration to include immigration enforcement — a distinctive justice system pressure that affects educational stability and family structure independently of criminal behavior.' : ''}`;
-  } else if (isMENA && low) {
-    justTrack = `Justice system: Middle Eastern and North African Americans face elevated surveillance and law enforcement contact post-9/11, particularly in Muslim communities. Federal surveillance programs and discriminatory policing create justice system exposure pathways that operate independently of behavior.`;
+  } else if (isMENA) {
+    justTrack = `Justice system: Middle Eastern and North African Americans face elevated surveillance and law enforcement contact post-9/11, particularly in Muslim communities. Federal surveillance programs and discriminatory policing create justice system exposure pathways that operate independently of behavior.${affluent ? ` ${nbArticle.charAt(0).toUpperCase() + nbArticle.slice(1)} neighborhood insulates from some risks, but this kind of profiling operates across income levels.` : ''}`;
   } else if (bothImm && veryLow) {
     justTrack = `Justice system: for children of immigrants, exposure can extend beyond incarceration to include immigration enforcement — a distinctive justice system pressure that affects educational stability and family structure independently of criminal behavior, and that varies with a family's status and country of origin. Beyond that, risk tracks the neighborhood-level policing patterns and school-to-justice pipeline that affect low-income communities generally.`;
-  } else if (isWoman) {
+  } else if (isWoman && low) {
     justTrack = `Justice system: women face significantly lower incarceration rates than men across all demographic groups. However, economic precarity and housing instability create their own form of structural capture — cycles of poverty, informal economic activity, and relationship-based criminal exposure that disproportionately affect low-income women.`;
   } else if (isNonBinary) {
-    justTrack = `Justice system: transgender and gender non-conforming Americans face extremely elevated incarceration rates — roughly 16% of transgender people report having been incarcerated, compared to 3% of the general population. Criminalization of gender non-conformity, homelessness, and survival sex work account for much of this disparity.`;
+    justTrack = `Justice system: gender non-conforming and transgender Americans face markedly elevated justice-system contact. In the U.S. Transgender Survey, roughly 16% of respondents reported having been incarcerated, compared to about 3% of US adults overall. That evidence comes from transgender respondents; research on non-binary people who don't identify as transgender is thin, which is itself a gap. Criminalization of gender non-conformity, homelessness, and survival sex work account for much of the disparity.`;
   } else if (affluent && isWhite) {
     justTrack = `Justice system: minimal exposure — structural privilege operates as a buffer at every gate where lower-income and minority users face friction. White Americans from ${nbWord} backgrounds are dramatically underrepresented in justice system contact relative to their population share, reflecting both behavioral differences enabled by resource access and differential enforcement patterns.`;
   } else if (affluent) {
@@ -1966,7 +1988,7 @@ function typical() {
     ? `<br><br><strong>Where your answers differ from the typical pattern:</strong> ${notes.join(' ')}`
     : '';
 
-  const tracks = `<br><br><strong>The three typical tracks:</strong> <em>Education:</em> ${eduTrack} <em>Income:</em> ${incTrack} <em>Justice system:</em> ${justTrack}`;
+  const tracks = `<br><br><strong>The three typical tracks:</strong> <em>Education:</em> ${eduTrack} <em>Income:</em> ${incTrack.replace(/^Income: /, '')} <em>Justice system:</em> ${justTrack.replace(/^Justice system: /, '')}`;
 
   return portrait + differ + tracks + delta;
 }
