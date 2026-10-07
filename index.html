@@ -566,6 +566,10 @@
     color: var(--ash);
   }
 
+  .chain-total { border-top: 1px solid rgba(212,146,15,0.35); border-bottom: none; padding-top: 14px; }
+  .chain-total .chain-filter { font-weight: 500; }
+  .chain-total .chain-mult { font-size: 14px; }
+  .r-chain-note { font-size: 12px; color: var(--ash); font-weight: 300; line-height: 1.5; margin: -4px 0 12px; }
   .chain-filter { font-size: 13px; color: #e8dcc4; color: var(--pale); font-weight: 300; max-width: 72%; line-height: 1.4; }
   .chain-mult { font-family: 'DM Mono', monospace; font-size: 12px; color: #f0b030; color: var(--gold); white-space: nowrap; }
 
@@ -1062,8 +1066,12 @@
 
     <div class="r-divider"></div>
 
-    <div class="r-section a1">Your chain</div>
+    <div class="r-section a1">What set your starting difficulty</div>
+    <div class="r-chain-note">Each row multiplies your starting-difficulty score. A higher score means a steeper start. This score sets your percentile and mode.</div>
     <div class="r-chain" id="rChain"></div>
+
+    <div class="r-section a1">Where you landed, given that start</div>
+    <div class="r-chain r-outcome" id="rOutcome"></div>
 
     <div class="r-section a2">The typical path</div>
     <div class="r-typical" id="rTypical"></div>
@@ -1558,7 +1566,7 @@ function calcOdds() {
     'One immigrant, one US-born':{l:'One immigrant parent — partial navigation gap',p:'× 3',v:3},
     'Both immigrants — same country':{l:'Both parents immigrants — shared navigation barriers',p:'× 8',v:8},
     'Both immigrants — different countries':{l:'Both parents immigrants — different origins, compounded barriers',p:'× 25',v:25},
-    "I'm not sure / it's complicated":{l:'Complex family origin',p:'× 5',v:5}
+    "I'm not sure / it's complicated":{l:"Parents' origin not specified — treated as neutral",p:'× 1.0',v:1}
   };
   const o = om[a.parentOrigin]||{l:'Parent origin',p:'× 2',v:2};
   rows.push({l:o.l,p:o.p}); structural*=o.v;
@@ -1744,7 +1752,7 @@ function calcOdds() {
   const pExact = Math.max(1e-6, geq(cd.i) - geq(cd.i+1));
   const oddsN = 1/pExact;
   rows.push({
-    l:'Outcome: ' + cd.n + ' — the chance of landing here, given where you started',
+    l:'Chance of ending with ' + cd.n + ', given your start',
     p: pExact >= 0.5 ? 'better than even' : '1 in ' + Math.round(oddsN).toLocaleString('en-US'),
     outcome: true
   });
@@ -1787,7 +1795,7 @@ function typical() {
   const isWhite = a.race === 'White / European-American';
   const isWoman = a.gender === 'Woman / female';
   const isNonBinary = a.gender === 'Non-binary or gender non-conforming';
-  const imm = a.parentOrigin && a.parentOrigin !== 'Both from the US';
+  const imm = a.parentOrigin && !['Both from the US', "I'm not sure / it's complicated"].includes(a.parentOrigin);
   const bothImm = ['Both immigrants — same country','Both immigrants — different countries'].includes(a.parentOrigin);
   const moved = a.neighborhood === 'We moved a lot — no single place was home';
   const veryLow = ['We moved a lot — no single place was home','Low-income — most families were struggling'].includes(a.neighborhood);
@@ -2021,7 +2029,7 @@ function seed() {
 
 function calc() {
   showScreen('calculating');
-  const {rows, structural, cohortSize, percentile} = calcOdds();
+  const {rows, structural, cohortSize, percentile, startScore} = calcOdds();
   const chain = document.getElementById('calcRows');
 
   chain.innerHTML = rows.map(r =>
@@ -2037,7 +2045,7 @@ function calc() {
     document.getElementById('calcResult').classList.add('show');
   }, delay);
 
-  setTimeout(() => showResult(rows, structural, cohortSize, percentile), delay + 1800);
+  setTimeout(() => showResult(rows, structural, cohortSize, percentile, startScore), delay + 1800);
 }
 
 function buildCurve(percentile) {
@@ -2133,7 +2141,7 @@ function pctLabel(pct) {
   return 'Your starting conditions represent some of the most structurally advantaged in the American system.';
 }
 
-function showResult(rows, structural, cohortSize, percentile) {
+function showResult(rows, structural, cohortSize, percentile, startScore) {
   showScreen('result');
   const nm = ans.name || 'You';
 
@@ -2156,12 +2164,18 @@ function showResult(rows, structural, cohortSize, percentile) {
     <div class="r-odds-secondary">Birth cohort: ${cohortFmt} people born in the same era</div>
   `;
 
-  // Chain — context row dimmed, interaction rows italicised
-  document.getElementById('rChain').innerHTML = rows.map(r =>
+  // Chain — starting-difficulty rows (context dimmed, interactions italic) + total; outcome shown separately
+  const startRows = rows.filter(r => !r.outcome);
+  const outRows = rows.filter(r => r.outcome);
+  const startTotal = startScore >= 100 ? Math.round(startScore).toLocaleString('en-US') : (Math.round(startScore*10)/10).toString();
+  document.getElementById('rChain').innerHTML = startRows.map(r =>
     `<div class="chain-row${r.context ? '' : r.interaction ? ' interaction' : ''}" ${r.context ? 'style="opacity:0.45"' : ''}>
       <div class="chain-filter">${r.l}</div>
       <div class="chain-mult">${r.p}</div>
     </div>`
+  ).join('') + `<div class="chain-row chain-total"><div class="chain-filter">Starting-difficulty score</div><div class="chain-mult">× ${startTotal}</div></div>`;
+  document.getElementById('rOutcome').innerHTML = outRows.map(r =>
+    `<div class="chain-row"><div class="chain-filter">${r.l}</div><div class="chain-mult">${r.p}</div></div>`
   ).join('');
 
   document.getElementById('rTypical').innerHTML =
