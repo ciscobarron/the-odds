@@ -1746,6 +1746,7 @@ function ordinal(n) {
 }
 
 function fmt(n) {
+  if (n<2)     return 'better than even';
   if (n>=1e12) return `1 in ${Math.round(n/1e12)} trillion`;
   if (n>=1e9)  return `1 in ${Math.round(n/1e9)} billion`;
   if (n>=1e6)  return `1 in ${Math.round(n/1e6)} million`;
@@ -1817,10 +1818,12 @@ function typical() {
     eduTrack = `High school completion: high — college-educated parents provide academic scaffolding even in low-income neighborhoods. Bachelor's degree attainment: roughly 40–50%, higher than most low-income profiles but still below the rate for white students from equivalent parental education backgrounds, reflecting documented diminishing returns on parental education for Black Americans.`;
   } else if (isBlack && affluent) {
     eduTrack = `High school completion: near universal. Bachelor's degree attainment: 55–65% — higher than most profiles, but research documents that Black Americans in affluent neighborhoods still face discrimination in selective college admissions and hiring that partially offsets neighborhood advantages.`;
-  } else if ((isLatino || bothImm) && veryLow && veryLowEdu) {
-    eduTrack = `High school completion for Latino and immigrant-household students from low-income backgrounds with parents who didn't finish high school: approximately 65–72%. Of those, roughly 18–22% go on to earn a bachelor's degree — constrained heavily by language barriers, financial pressure, and lack of college navigation support.`;
-  } else if ((isLatino || bothImm) && veryLow && lowEdu) {
-    eduTrack = `High school completion: approximately 70–78%. Bachelor's degree attainment: roughly 20–28% — the immigrant parent effect creates both headwinds (navigation gaps, language barriers) and tailwinds (higher educational aspirations documented in the immigrant optimism literature).`;
+  } else if (isLatino && veryLow && veryLowEdu) {
+    eduTrack = `High school completion for ${imm ? 'Latino and immigrant-household students' : 'Latino students'} from low-income backgrounds with parents who didn't finish high school: approximately 65–72%. Of those, roughly 18–22% go on to earn a bachelor's degree — constrained heavily by ${imm ? 'language barriers, financial pressure, and lack of college navigation support' : 'financial pressure and lack of college navigation support'}.`;
+  } else if (isLatino && veryLow && lowEdu) {
+    eduTrack = `High school completion: approximately 70–78%. Bachelor's degree attainment: roughly 20–28% — ${imm ? 'the immigrant parent effect creates both headwinds (navigation gaps, language barriers) and tailwinds (higher educational aspirations documented in the immigrant optimism literature)' : 'constrained by financial pressure, under-resourced schools, and no one in the household having navigated college admissions'}.`;
+  } else if (bothImm && veryLow && lowEdu) {
+    eduTrack = `Outcomes for children of immigrants from low-income households whose parents didn't finish college vary widely by parents' country of origin and their education before migrating, so no single completion rate describes this group well. Common headwinds are language barriers, financial pressure, and no one at home who has navigated U.S. college admissions; the immigrant optimism literature also documents unusually high educational aspirations that often partly offset them.`;
   } else if (moved && lowEdu) {
     eduTrack = `High school completion rates for students who moved 3+ times in childhood run 10–15 points below the national average — each move corresponds to roughly a 4–6 month academic setback. Bachelor's degree attainment from this starting point: under 20%.`;
   } else if (isWoman && veryLow) {
@@ -1847,8 +1850,12 @@ function typical() {
     incTrack = `Median earnings for Black Americans with a high school diploma: roughly $35,000–$42,000. The racial wealth gap means that even equivalent earnings translate to significantly less wealth accumulation — the median Black family holds roughly 12 cents for every dollar of white family wealth (Federal Reserve, 2020).`;
   } else if (isBlack && affluent) {
     incTrack = `Income: above-average earnings trajectory, though research documents a persistent racial earnings gap of approximately 20–25% between Black and white workers with equivalent education and experience. Wealth accumulation is further constrained by the racial wealth gap operating through inheritance and housing appreciation.`;
-  } else if ((isLatino || bothImm) && veryLow && lowEdu) {
-    incTrack = `Median household income for this profile: roughly $38,000–$52,000. Latino workers with immigrant parents and non-college-educated household heads face a compounded wage gap — language barriers, documentation status uncertainty, and occupational concentration in lower-wage sectors all compress earnings below what education alone would predict.`;
+  } else if (isLatino && veryLow && lowEdu) {
+    incTrack = imm
+      ? `Median household income for this profile: roughly $38,000–$52,000. Latino workers with immigrant parents and non-college-educated household heads face a compounded wage gap — language barriers, documentation status uncertainty, and occupational concentration in lower-wage sectors all compress earnings below what education alone would predict.`
+      : `Median household income for this profile: roughly $38,000–$52,000. Latino workers from non-college-educated households face a compounded wage gap — thinner professional networks, the hiring discrimination documented in audit studies, and occupational concentration in lower-wage sectors all compress earnings below what education alone would predict.`;
+  } else if (bothImm && !isAsian && veryLow && lowEdu) {
+    incTrack = `Income outcomes for children of immigrants from low-income households vary widely by parents' country of origin and by whether credentials earned abroad transferred, so there is no single modal outcome. Language barriers, concentration in lower-wage sectors, and thin professional networks compress earnings for many; strong educational aspirations and family support push the other way.`;
   } else if (isWoman && low) {
     incTrack = `Income for women from low-income backgrounds: roughly $28,000–$42,000 at peak earning years — constrained by occupational concentration in undervalued female-coded sectors, the motherhood penalty (documented at roughly 7–9% per child), and interrupted career trajectories due to caregiving.`;
   } else if (affluent && highEdu) {
@@ -1871,10 +1878,12 @@ function typical() {
     justTrack = `Justice system: Black men are incarcerated at 5× the rate of white men — the single largest racial disparity in the American criminal justice system. From low-income starting points, the pipeline from school discipline to justice system contact is well-documented: Black students are suspended at 3× the rate of white students for equivalent behavior, creating a school-to-prison pathway that operates as a structural filter, not a behavioral one.`;
   } else if (isBlack && affluent) {
     justTrack = `Justice system: even from affluent starting points, Black Americans face elevated rates of police contact and criminal justice involvement relative to white Americans from equivalent backgrounds. Driving while Black, stop-and-frisk patterns, and sentencing disparities persist across income levels — structural racism in the justice system is not fully offset by class advantage.`;
-  } else if ((isLatino || bothImm) && veryLow) {
-    justTrack = `Justice system: Latino men are incarcerated at 1.3× the rate of white men. For immigrant-household children, the risk extends beyond incarceration to include immigration enforcement — a distinctive justice system pressure that affects educational stability and family structure independently of criminal behavior.`;
+  } else if (isLatino && veryLow) {
+    justTrack = `Justice system: Latino men are incarcerated at 1.3× the rate of white men.${imm ? ' For immigrant-household children, the risk extends beyond incarceration to include immigration enforcement — a distinctive justice system pressure that affects educational stability and family structure independently of criminal behavior.' : ''}`;
   } else if (isMENA && low) {
     justTrack = `Justice system: Middle Eastern and North African Americans face elevated surveillance and law enforcement contact post-9/11, particularly in Muslim communities. Federal surveillance programs and discriminatory policing create justice system exposure pathways that operate independently of behavior.`;
+  } else if (bothImm && veryLow) {
+    justTrack = `Justice system: for children of immigrants, exposure can extend beyond incarceration to include immigration enforcement — a distinctive justice system pressure that affects educational stability and family structure independently of criminal behavior, and that varies with a family's status and country of origin. Beyond that, risk tracks the neighborhood-level policing patterns and school-to-justice pipeline that affect low-income communities generally.`;
   } else if (isWoman) {
     justTrack = `Justice system: women face significantly lower incarceration rates than men across all demographic groups. However, economic precarity and housing instability create their own form of structural capture — cycles of poverty, informal economic activity, and relationship-based criminal exposure that disproportionately affect low-income women.`;
   } else if (isNonBinary) {
@@ -1897,7 +1906,9 @@ function typical() {
     portrait = `The typical person who started where <strong>${nm}</strong> started encounters the racial wealth gap at every gate — in school funding, in hiring, in lending, in criminal justice exposure. The data show that Black Americans with identical qualifications to white peers earn less, build wealth more slowly, and face steeper climbs at every institutional threshold. The typical person here is capable, hardworking, and systematically underestimated. The distance between their capacity and their outcomes is a measure of structural design, not individual failing.`;
   } else if (isBlack && affluent) {
     portrait = `The typical person who started where <strong>${nm}</strong> started had real structural advantages — stable neighborhood, institutional access, resource-rich schools. And yet the data consistently show that race operates as an independent variable even from affluent starting points: Black Americans with equivalent credentials earn less, accumulate wealth more slowly, and face persistent discrimination in hiring, lending, and institutional advancement. The system extends advantages selectively.`;
-  } else if ((isLatino || bothImm) && veryLow && lowEdu) {
+  } else if (bothImm && !isLatino && veryLow && lowEdu) {
+    portrait = `The typical person who started where <strong>${nm}</strong> started grew up between two worlds: a household that carried the courage and ambition of migration, and a country whose institutions were not built with that household in mind. College wasn't something anyone at home had navigated, so the path there was visible mostly as a rumor. Outcomes from this starting point vary widely — strong upward mobility sits alongside steep barriers — and the difference often comes down to which school, program, or person made the path legible. This is not a story about individual capacity. It is a story about navigation.`;
+  } else if (isLatino && veryLow && lowEdu) {
     portrait = `The typical person who started where <strong>${nm}</strong> started is hardworking, capable, and tired in a specific way. They probably finished high school — or came close — but college wasn't something anyone in their world had navigated, so the path there was invisible. They entered the workforce in their late teens or early twenties: service, construction, logistics, care work. They make somewhere between $38,000 and $52,000 a year. They live near where they grew up. They love their family. They've never had a framework that explained the gap between what they sensed they were capable of and what the structure made available to them.`;
   } else if (moved && lowEdu) {
     portrait = `The typical person who started where <strong>${nm}</strong> started never had the chance to put down roots — in a school, in a neighborhood, in a peer group that knew them. Each move reset the social capital that turns into academic scaffolding. The system sorts heavily by stability, and instability — regardless of cause — compounds into educational gaps, network gaps, and economic gaps that are difficult to close.`;
@@ -2108,7 +2119,7 @@ function doCopy() {
 }
 
 function buildDeepPrompt(nm, percentile, oddsStr) {
-  return `You are a structured guide helping someone understand the social and economic system they grew up in — not to judge their outcomes, but to make the invisible visible. The person you're speaking with has just completed a short demographic intake. Their name is ${nm}. Their structural path placed them in the ${percentile}${ordinal(percentile)} percentile of structural difficulty, with structural odds of approximately ${oddsStr} — meaning their combination of starting conditions and outcomes is that statistically uncommon. Continue from that moment. Ask them: "That number — what does it bring up for you?" Then follow wherever they go, with warmth, curiosity, and honesty. Your goal is to help them see their chain clearly — the contingencies that account for where they landed relative to where the system predicted they'd land — and to arrive at their own conclusions about what that means. One question at a time. No jargon. No judgment.`;
+  return `You are a structured guide helping someone understand the social and economic system they grew up in — not to judge their outcomes, but to make the invisible visible. The person you're speaking with has just completed a short demographic intake. Their name is ${nm}. Their structural path placed them in the ${percentile}${ordinal(percentile)} percentile of structural difficulty, with structural odds of ${oddsStr === 'better than even' ? oddsStr : 'approximately ' + oddsStr} — meaning their combination of starting conditions and outcomes is ${oddsStr === 'better than even' ? 'common among people who started where they did' : 'that statistically uncommon'}. Continue from that moment. Ask them: "That number — what does it bring up for you?" Then follow wherever they go, with warmth, curiosity, and honesty. Your goal is to help them see their chain clearly — the contingencies that account for where they landed relative to where the system predicted they'd land — and to arrive at their own conclusions about what that means. One question at a time. No jargon. No judgment.`;
 }
 
 function copyDeepPrompt() {
