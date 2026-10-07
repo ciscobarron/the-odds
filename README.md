@@ -8,7 +8,9 @@ The tool is built to make an invisible sorting system visible, not to assign gui
 
 ## Methodology
 
-Each starting condition is assigned a multiplier reflecting relative structural difficulty, anchored in peer-reviewed research (administrative data, audit studies, and natural experiments where available). The specific values are informed judgment calls, not fitted statistical estimates. Multipliers compound across inputs, three documented interaction effects adjust for variables that moderate each other, and the resulting score is converted to a 1-99 index on a log scale. That index is a scaled difficulty score, not a measured population percentile. The model simplifies; it does not claim to account for any individual life. The full list of sources and the reasoning behind each multiplier is on the site's "How are these odds calculated?" page.
+Each starting condition is assigned a multiplier reflecting relative structural difficulty, anchored in peer-reviewed research (administrative data, audit studies, and natural experiments where available). The specific values are informed judgment calls, not fitted statistical estimates. Multipliers compound across inputs, and three documented interaction effects adjust for variables that moderate each other. The product is converted to a 1-99 index on a log scale, which sets the difficulty percentile and mode; it is a scaled difficulty score, not a measured population percentile.
+
+The "1 in X" odds are a separate calculation: the estimated probability that someone with your starting conditions ends with exactly the schooling you reported. It uses an ordered-logit model over seven credential levels, calibrated to Census 2022 attainment shares and the Pell Institute's bachelor's-attainment gap between the top and bottom family-income quartiles. The calibration relies on rough population shares and treats inputs as independent, so the output is an order-of-magnitude estimate. The model simplifies; it does not claim to account for any individual life. The full list of sources and the reasoning behind each multiplier is on the site's "How are these odds calculated?" page.
 
 ## Privacy
 

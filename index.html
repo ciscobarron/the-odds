@@ -1132,12 +1132,12 @@
 
     <div class="src-item">
       <div class="src-item-title">Structural multiplier approach</div>
-      <div class="src-item-note">Each demographic input is assigned a multiplier based on the relative probability of achieving above-median educational and economic outcomes given that starting condition. Multipliers compound across inputs. The result is a structural difficulty score that is then converted to a percentile using a log scale anchored at observed minimum and maximum values across the input space. The birth cohort size is provided as context but is not part of the structural score.</div>
+      <div class="src-item-note">Each starting condition (gender, race and ethnicity, parents' origin and education, neighborhood, household stability, access to guidance) is assigned a multiplier reflecting relative structural difficulty. The multipliers are informed judgment calls anchored in the research below, not fitted statistical estimates. They compound across inputs, with three documented interaction effects. The product is your <em>starting-difficulty score</em>, which sets your percentile and difficulty mode. Birth decade and current income are context only and are not part of the score.</div>
     </div>
 
     <div class="src-item">
       <div class="src-item-title">Percentile calibration</div>
-      <div class="src-item-note">The 50th percentile is anchored at a structural multiplier of approximately 6 — representing a white or Asian-American male born to one immigrant parent with a high school diploma, in a working-class neighborhood with some economic instability, who completed a bachelor's degree with limited institutional guidance. This approximates the median structural profile of the US adult population given observed demographic distributions.</div>
+      <div class="src-item-note">The starting-difficulty score is converted to a 1–99 index on a log scale. It is a scaled index of how hard the starting conditions are, not a measured population percentile. As a rough check, using approximate US population shares for each input and treating them as independent, the median American lands near the 50th percentile on this scale. Those shares are rough assumptions, and in reality the inputs are correlated.</div>
     </div>
 
     <div class="src-section-title">Interaction effects</div>
@@ -1222,9 +1222,10 @@
     </div>
 
     <div class="src-item">
-      <div class="src-item-title">Educational attainment multipliers</div>
-      <div class="src-item-meta">Returns to education by credential level</div>
-      <div class="src-item-note">
+      <div class="src-item-title">Educational attainment: start-to-outcome odds</div>
+      <div class="src-item-meta">Credential attainment by family background; returns to education by credential level</div>
+      <div class="src-item-note"><strong>How the odds are computed:</strong> The "1 in X" figure is the estimated probability that someone starting where you did ends with exactly the schooling you reported. It comes from an ordered-logit (proportional-odds) model over seven credential levels, from less than high school to multiple graduate degrees. The model is driven by the starting conditions that bear on credentials, with gender (other than non-binary) and parents' origin excluded and the race multiplier damped to its square root. Its two parameters (slope and thresholds) are calibrated so that (1) the overall mix of credentials matches Census 2022 attainment of adults 25+, and (2) the bachelor's-by-24 gap between the top and bottom family-income quartiles matches the Pell Institute estimate (about 58% vs. 16%). The population shares used for calibration are rough approximations, and the model treats inputs as independent. Treat the output as an order-of-magnitude estimate, not a precise probability.<br><br>
+        <strong>Calibration data:</strong> U.S. Census Bureau (2022), Educational Attainment in the United States (adults 25+). — Pell Institute, "Indicators of Higher Education Equity in the United States" (bachelor's attainment by age 24 by family income quartile).<br><br>
         <strong>Descriptive:</strong> BLS (2023), "Education Pays," Occupational Outlook Handbook. — Hout, M. (2012), "Social and Economic Returns to College Education in the United States," Annual Review of Sociology.<br><br>
         <strong>Causal:</strong> Autor, D. (2014), "Skills, Education, and the Rise of Earnings Inequality Among the 'Other 99 Percent,'" Science. [documents skill-biased technological change driving credential premiums; partially causal via structural labor market analysis]
       </div>
@@ -1473,9 +1474,11 @@ function back() { if(cur>0){cur--;render();} }
 // ─── CALCULATION ENGINE ────────────────────────────────────────────────────
 
 function calcOdds() {
+  const ATTAIN = {k:0.525, alpha:[3.814,1.867,1.175,0.713,-0.656,-3.188]}; // fit to Census 2022 attainment shares + Pell Institute top-vs-bottom income quartile BA rates
   const a = ans;
   let rows = [];
-  let structural = 1; // structural multiplier only (no cohort)
+  let structural = 1; // starting-condition difficulty (no cohort, no schooling) — drives the percentile
+  let eduScore = 1;   // the starting conditions that bear on credentials — drives the odds (see attainment model below)
 
   // Cohort — context only, not part of structural score
   const cohorts = {
@@ -1508,6 +1511,10 @@ function calcOdds() {
   };
   const g = gm[a.gender]||{l:'Gender',p:'× 1.0',v:1};
   rows.push({l:g.l,p:g.p}); structural*=g.v;
+  // Gender's structural penalty is in wages, hours and caregiving, not in credentials (women now
+  // out-attain men), so only the non-binary factor — school climate, elevated dropout risk — enters
+  // the attainment score, at the dampened (square-root) strength used for race below.
+  if (a.gender === 'Non-binary or gender non-conforming') eduScore *= Math.sqrt(g.v);
 
   // RACE / ETHNICITY
   // Source: Kline, Rose & Walters (2022, QJE): 83,000 résumés; Black names
@@ -1533,6 +1540,10 @@ function calcOdds() {
   };
   const r = rm[a.race]||{l:'Race/ethnicity',p:'× 1',v:1};
   rows.push({l:r.l,p:r.p}); structural*=r.v;
+  // Race effects on credentials, net of class, are smaller than the labor-market effects the full
+  // multiplier encodes, so they enter the attainment score at square-root strength. Asian-American
+  // and MENA adults average higher attainment than white adults, so they get no penalty here.
+  if (['Black / African-American','Latino / Hispanic','Indigenous / Native American','Multiracial'].includes(a.race)) eduScore *= Math.sqrt(r.v);
 
   // PARENT ORIGIN
   // Source: Portes & Rumbaut (2001) documents second-generation outcomes
@@ -1570,7 +1581,7 @@ function calcOdds() {
     'Graduate or professional degree':{l:'Parents with graduate education — above baseline',p:'× 0.7',v:0.7}
   };
   const e = em[a.parentEdu]||{l:'Parental education',p:'× 3',v:3};
-  rows.push({l:e.l,p:e.p}); structural*=e.v;
+  rows.push({l:e.l,p:e.p}); structural*=e.v; eduScore*=e.v;
 
   // NEIGHBORHOOD
   // Source: Chetty & Hendren (2018, QJE): quasi-experimental; each year of
@@ -1593,7 +1604,7 @@ function calcOdds() {
     'Affluent — most families had significant resources':{l:'Affluent neighborhood — above baseline access',p:'× 0.5',v:0.5}
   };
   const n = nm[a.neighborhood]||{l:'Neighborhood',p:'× 2',v:2};
-  rows.push({l:n.l,p:n.p}); structural*=n.v;
+  rows.push({l:n.l,p:n.p}); structural*=n.v; eduScore*=n.v;
 
   // ECONOMIC STABILITY
   // Source: Ganong & Noel (2019, AER): de-identified bank data; consumption
@@ -1613,29 +1624,7 @@ function calcOdds() {
     "Very stable — money wasn't a source of stress":{l:'Financially secure childhood — above baseline',p:'× 0.6',v:0.6}
   };
   const s = sm[a.stability]||{l:'Economic stability',p:'× 2',v:2};
-  rows.push({l:s.l,p:s.p}); structural*=s.v;
-
-  // SCHOOLING ATTAINMENT
-  // Source: Autor (2014, Science): skill-biased technological change drives
-  // college premium; graduate degree premium has grown substantially since
-  // 1980s. BLS (2023) Education Pays: bachelor's median weekly earnings 67%
-  // above high school diploma; graduate degree adds further 20-30%.
-  // Hout (2012, Annual Review): social returns compound economic returns.
-  // Multipliers reflect relative lifetime earnings and mobility probability
-  // ratios, not just credential attainment rates. Multiple graduate degrees
-  // 60× reflects rarity of the outcome (~1.5% of US adults) combined with
-  // the earnings and mobility premium.
-  const schm = {
-    'I left before finishing high school':{l:'Left school before high school completion',p:'× 2',v:2},
-    'High school diploma or GED':{l:'High school diploma attained',p:'× 1.5',v:1.5},
-    "Some college — didn't finish":{l:'Some college without completion',p:'× 1.2',v:1.2},
-    "Associate's degree or trade certification":{l:"Associate's or trade credential",p:'× 1.0',v:1},
-    "Bachelor's degree":{l:"Bachelor's degree attained",p:'× 8',v:8},
-    'One graduate degree':{l:'Graduate degree attained',p:'× 20',v:20},
-    'Multiple graduate degrees':{l:'Multiple graduate degrees — top ~1.5% of US adults',p:'× 60',v:60}
-  };
-  const sch = schm[a.schooling]||{l:'Educational attainment',p:'× 5',v:5};
-  rows.push({l:sch.l,p:sch.p}); structural*=sch.v;
+  rows.push({l:s.l,p:s.p}); structural*=s.v; eduScore*=s.v;
 
   // INSTITUTIONAL KNOWLEDGE / MAP ACCESS
   // Source: Hoxby & Turner (2015, AER): RCT with ~40,000 students; $6
@@ -1657,7 +1646,7 @@ function calcOdds() {
     'Yes — my household was deeply familiar with it':{l:'Strong household institutional knowledge — above baseline',p:'× 0.4',v:0.4}
   };
   const mp = mm[a.map]||{l:'Institutional knowledge access',p:'× 1.5',v:1.5};
-  rows.push({l:mp.l,p:mp.p}); structural*=mp.v;
+  rows.push({l:mp.l,p:mp.p}); structural*=mp.v; eduScore*=mp.v;
 
 
   // ─── INTERACTION EFFECTS ────────────────────────────────────────────────────
@@ -1676,7 +1665,7 @@ function calcOdds() {
     'Affluent — most families had significant resources'].includes(a.neighborhood);
   const lowParentEdu = ['Less than high school','High school diploma or GED'].includes(a.parentEdu);
   if (affluentNeighborhood && lowParentEdu) {
-    structural *= 0.65;
+    structural *= 0.65; eduScore *= 0.65;
     rows.push({
       l:'Interaction: affluent neighborhood partially substitutes for parental education (school quality effect)',
       p:'× 0.65',
@@ -1697,7 +1686,7 @@ function calcOdds() {
   const isBlackRace = a.race === 'Black / African-American';
   const highParentEdu = ["Bachelor's degree",'Graduate or professional degree'].includes(a.parentEdu);
   if (isBlackRace && highParentEdu) {
-    structural *= 1.4;
+    structural *= 1.4; eduScore *= 1.4;
     rows.push({
       l:'Interaction: parental education advantage diminished for Black Americans — persistent discrimination at higher status levels',
       p:'× 1.4',
@@ -1719,7 +1708,7 @@ function calcOdds() {
     'Low-income — most families were struggling'].includes(a.neighborhood);
   const veryLowParentEdu = a.parentEdu === 'Less than high school';
   if (veryLowNeighborhood && veryLowParentEdu) {
-    structural *= 1.2;
+    structural *= 1.2; eduScore *= 1.2;
     rows.push({
       l:'Interaction: low-income neighborhood + low parental education compound via peer community effect',
       p:'× 1.2',
@@ -1736,7 +1725,31 @@ function calcOdds() {
   const rawPct = (logVal - logMin) / (logMax - logMin);
   const percentile = Math.round(Math.min(99, Math.max(1, rawPct * 99)));
 
-  return { rows, structural: Math.round(structural), cohortSize, percentile };
+  // START-TO-OUTCOME ODDS
+  // Ordered-logit (proportional odds) model: P(credential >= j | start) = sigmoid(alpha_j - K * ln(eduScore)).
+  // The odds shown are 1 / P(exactly the credential you reached | where you started).
+  const cred = {
+    'I left before finishing high school':{i:0,n:'leaving school before high school completion'},
+    'High school diploma or GED':{i:1,n:'a high school diploma as your highest credential'},
+    "Some college — didn't finish":{i:2,n:'some college without a degree'},
+    "Associate's degree or trade certification":{i:3,n:"an associate's degree or trade credential"},
+    "Bachelor's degree":{i:4,n:"a bachelor's degree"},
+    'One graduate degree':{i:5,n:'one graduate degree'},
+    'Multiple graduate degrees':{i:6,n:'multiple graduate degrees'}
+  };
+  const cd = cred[a.schooling] || cred["Bachelor's degree"];
+  const sig = x => 1/(1+Math.exp(-x));
+  const lnE = Math.log(eduScore);
+  const geq = j => j<=0 ? 1 : j>=7 ? 0 : sig(ATTAIN.alpha[j-1] - ATTAIN.k*lnE);
+  const pExact = Math.max(1e-6, geq(cd.i) - geq(cd.i+1));
+  const oddsN = 1/pExact;
+  rows.push({
+    l:'Outcome: ' + cd.n + ' — the chance of landing here, given where you started',
+    p: pExact >= 0.5 ? 'better than even' : '1 in ' + Math.round(oddsN).toLocaleString('en-US'),
+    outcome: true
+  });
+
+  return { rows, structural: Math.round(1/pExact), cohortSize, percentile, eduScore, startScore: structural, pExact };
 }
 
 function ordinal(n) {
@@ -2136,7 +2149,7 @@ function showResult(rows, structural, cohortSize, percentile) {
       <div class="r-pct-label">percentile<br>of structural<br>difficulty</div>
     </div>
     <div class="r-odds-highlight">Structural odds: <span>${oddsStr}</span></div>
-    <div class="r-odds-highlight-sub">The rarity of your specific combination of starting conditions and outcomes</div>
+    <div class="r-odds-highlight-sub">The chance of landing where you did, given where you started</div>
     <div class="r-plain-language">${plainLanguage(nm, percentile, oddsStr)}</div>
     <div class="r-curve-wrap">${curveHTML}</div>
     <div class="r-curve-caption"><span>Most advantaged</span><span>Most suppressed</span></div>
@@ -2183,7 +2196,7 @@ function doCopy() {
 }
 
 function buildDeepPrompt(nm, percentile, oddsStr) {
-  return `You are a structured guide helping someone understand the social and economic system they grew up in — not to judge their outcomes, but to make the invisible visible. The person you're speaking with has just completed a short demographic intake. Their name is ${nm}. Their structural path placed them in the ${percentile}${ordinal(percentile)} percentile of structural difficulty, with structural odds of ${oddsStr === 'better than even' ? oddsStr : 'approximately ' + oddsStr} — meaning their combination of starting conditions and outcomes is ${oddsStr === 'better than even' ? 'common among people who started where they did' : 'that statistically uncommon'}. Continue from that moment. Ask them: "That number — what does it bring up for you?" Then follow wherever they go, with warmth, curiosity, and honesty. Your goal is to help them see their chain clearly — the contingencies that account for where they landed relative to where the system predicted they'd land — and to arrive at their own conclusions about what that means. One question at a time. No jargon. No judgment.`;
+  return `You are a structured guide helping someone understand the social and economic system they grew up in — not to judge their outcomes, but to make the invisible visible. The person you're speaking with has just completed a short demographic intake. Their name is ${nm}. Their structural path placed them in the ${percentile}${ordinal(percentile)} percentile of structural difficulty, with structural odds of ${oddsStr === 'better than even' ? oddsStr : 'approximately ' + oddsStr} — meaning the chance of landing where they did, given where they started, is ${oddsStr === 'better than even' ? 'better than even — a common outcome for people who started where they did' : 'low — a statistically uncommon outcome for people who started where they did'}. Continue from that moment. Ask them: "That number — what does it bring up for you?" Then follow wherever they go, with warmth, curiosity, and honesty. Your goal is to help them see their chain clearly — the contingencies that account for where they landed relative to where the system predicted they'd land — and to arrive at their own conclusions about what that means. One question at a time. No jargon. No judgment.`;
 }
 
 function copyDeepPrompt() {
